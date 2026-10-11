@@ -1,0 +1,37 @@
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="description" content="e-Portfolio : projets, CV FR/EN, mobilité, engagement, sports.">
+  <title>Prénom Nom — e-Portfolio</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <header class="topbar">
+    <a class="brand" href="#home" id="brand"></a>
+    <button class="burger" id="burger" aria-label="Menu">☰</button>
+    <nav id="nav" class="nav"></nav>
+    <div class="tools">
+      <a id="cvLink" class="btn" href="#" target="_blank" rel="noopener"></a>
+      <a id="liLink" class="btn" href="#" target="_blank" rel="noopener">LinkedIn</a>
+      <button id="themeBtn" class="btn" aria-label="Thème clair/sombre">🌓</button>
+      <div class="lang">
+        <button id="langFr" class="btn">FR</button>
+        <button id="langEn" class="btn">EN</button>
+      </div>
+    </div>
+  </header>
+
+  <main id="app"></main>
+  <noscript><p style="padding:2rem">Activez JavaScript pour consulter ce portfolio.</p></noscript>
+
+  <footer class="footer">
+    <span id="copyright"></span>
+    <a id="liFooter" href="#" target="_blank" rel="noopener">LinkedIn</a>
+  </footer>
+
+  <script src="content.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>
