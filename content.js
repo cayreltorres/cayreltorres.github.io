@@ -6,7 +6,7 @@ window.CONTENT = {
   year: "MF2E",
   linkedin: "https://www.linkedin.com/in/camilo-cayrel-torres-390929335",
   cv: { fr: "assets/CV_FR.pdf", en: "assets/CV_EN.pdf" },
-  photo: "assets/photo.jpg",
+  photo: "assets/photo_profil.jpeg",
 
   /* ======================= FRANÇAIS ======================= */
   fr: {
