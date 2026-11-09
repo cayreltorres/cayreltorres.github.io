@@ -19,15 +19,15 @@ a { color: var(--accent); }
   position: sticky; top: 0; z-index: 10; display: flex; align-items: center; gap: 1rem;
   padding: .7rem 1.2rem; background: var(--bg); border-bottom: 1px solid var(--border);
 }
-.brand { font-weight: 700; text-decoration: none; color: var(--fg); }
+.brand { font-weight: 700; text-decoration: none; color: var(--fg); white-space: nowrap; }
 .nav { display: flex; gap: .3rem; margin-left: 1rem; flex: 1; }
-.nav a { padding: .35rem .7rem; border-radius: 999px; text-decoration: none; color: var(--muted); }
+.nav a { white-space: nowrap; padding: .35rem .7rem; border-radius: 999px; text-decoration: none; color: var(--muted); }
 .nav a.active, .nav a:hover { background: var(--card); color: var(--fg); }
 .tools { display: flex; align-items: center; gap: .5rem; }
 .lang { display: flex; gap: .2rem; }
 .btn {
   border: 1px solid var(--border); background: var(--card); color: var(--fg);
-  padding: .3rem .7rem; border-radius: 999px; cursor: pointer; text-decoration: none; font-size: .9rem;
+  padding: .3rem .7rem; border-radius: 999px; cursor: pointer; text-decoration: none; font-size: .9rem; white-space: nowrap;
 }
 .btn.on { background: var(--accent); color: #fff; border-color: var(--accent); }
 .burger { display: none; background: none; border: 0; font-size: 1.5rem; color: var(--fg); cursor: pointer; }
@@ -38,19 +38,25 @@ h1 { font-size: 2.2rem; margin: 0 0 .3rem; }
 h2 { margin-top: 2.2rem; }
 .lead { color: var(--muted); font-size: 1.15rem; }
 .hero { display: flex; gap: 2rem; align-items: center; flex-wrap: wrap; margin-bottom: 2rem; }
-.hero img { width: 180px; height: 180px; border-radius: 50%; object-fit: cover; border: 3px solid var(--accent); }
+.hero > div { flex: 1 1 420px; min-width: 0; }
+.hero img { flex: none; width: 180px; height: 180px; border-radius: 50%; object-fit: cover; border: 3px solid var(--accent); }
 .cards { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 1rem; }
 .card { background: var(--card); border: 1px solid var(--border); border-radius: var(--radius); padding: 1rem 1.2rem; }
 .card h3 { margin: 0 0 .3rem; }
 .tag { display: inline-block; font-size: .78rem; padding: .1rem .55rem; margin: .15rem .2rem 0 0;
   border-radius: 999px; background: var(--bg); border: 1px solid var(--border); color: var(--muted); }
 
-/* Frise antichronologique */
-.timeline { position: relative; margin: 1.5rem 0; padding-left: 1.6rem; border-left: 3px solid var(--accent); }
+/* Frise antichronologique : trait vertical + points centrés dessus */
+.timeline { position: relative; margin: 1.5rem 0; padding-left: 32px; }
+.timeline::before {
+  content: ""; position: absolute; left: 6px; top: 6px; bottom: 6px; width: 3px;
+  background: var(--accent); border-radius: 2px;
+}
 .tl-item { position: relative; margin-bottom: 1.6rem; }
 .tl-item::before {
-  content: ""; position: absolute; left: -2.15rem; top: .45rem; width: 14px; height: 14px;
-  border-radius: 50%; background: var(--accent); border: 3px solid var(--bg);
+  content: ""; position: absolute; left: -24.5px; top: 3px; width: 16px; height: 16px;
+  transform: translateX(-50%); border-radius: 50%;
+  background: var(--accent); border: 3px solid var(--bg); box-shadow: 0 0 0 2px var(--accent);
 }
 .tl-date { color: var(--muted); font-size: .9rem; font-weight: 600; }
 .tl-item a.card { display: block; text-decoration: none; color: inherit; }
@@ -64,7 +70,7 @@ h2 { margin-top: 2.2rem; }
   color: var(--muted); font-size: .9rem;
 }
 
-@media (max-width: 800px) {
+@media (max-width: 1240px) {
   .burger { display: block; margin-left: auto; }
   .nav { display: none; position: absolute; top: 100%; left: 0; right: 0; flex-direction: column;
     background: var(--bg); padding: .6rem 1.2rem; border-bottom: 1px solid var(--border); margin: 0; }

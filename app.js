@@ -14,7 +14,7 @@
     document.documentElement.dataset.theme = theme;
     document.title = `${C.name} — e-Portfolio (${C.school} ${C.year})`;
     $("#brand").textContent = C.name;
-    $("#nav").innerHTML = ["home", "projects", "mobility", "civic", "sports", "career"]
+    $("#nav").innerHTML = ["home", "education", "projects", "mobility", "civic", "sports", "career"]
       .map((k) => `<a href="${k === "projects" ? "#/projects" : "#" + k}" data-k="${k}">${esc(T().nav[k])}</a>`).join("");
     $("#cvLink").textContent = T().cvLabel;
     $("#cvLink").href = C.cv[lang];
@@ -40,11 +40,12 @@
       <h2>${esc(h.skillsTitle)}</h2>
       <p>${h.skills.map((s) => `<span class="tag">${esc(s)}</span>`).join("")}</p>
       <h2>${esc(h.interestsTitle)}</h2>
-      <p>${esc(h.interests)}</p>`;
+      <p>${esc(h.interests)}</p>
+      ${h.languages ? `<h2>${esc(h.languagesTitle)}</h2><p>${esc(h.languages)}</p>` : ""}`;
   }
 
   function pageProjects() {
-    const list = [...T().projects].sort((a, b) => String(b.date).localeCompare(String(a.date))); // antichronologique
+    const list = [...T().projects].sort((a, b) => String(b.sort || b.date).localeCompare(String(a.sort || a.date))); // antichronologique
     return `
       <h1>${esc(T().projectsTitle)}</h1>
       <div class="timeline">
@@ -97,6 +98,7 @@
     let key = "home", html;
     if (h.startsWith("#/projects/")) { key = "projects"; html = pageProject(decodeURIComponent(h.slice(11))); }
     else if (h === "#/projects" || h === "#projects") { key = "projects"; html = pageProjects(); }
+    else if (h === "#education") { key = "education"; html = pageSection("education"); }
     else if (h === "#mobility") { key = "mobility"; html = pageSection("mobility"); }
     else if (h === "#civic") { key = "civic"; html = pageSection("civic"); }
     else if (h === "#sports") { key = "sports"; html = pageSection("sports"); }
