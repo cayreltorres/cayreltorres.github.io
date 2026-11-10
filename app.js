@@ -8,13 +8,19 @@
   const T = () => C[lang];
   const esc = (s) => String(s ?? "").replace(/[&<>"]/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]));
 
+  /* ---------- Photos : liste partagée FR/EN, un fichier absent est ignoré ---------- */
+  const photosOf = (id, fallback) => ((C.photos || {})[id] || fallback || []);
+  // Pas d'espaces dans le conteneur : s'il n'y a plus d'image, il est vide et se masque tout seul (:empty).
+  const imgs = (list, cls) => list.map((src) =>
+    `<img class="${cls}" src="${esc(src)}" alt="" loading="lazy" data-zoom onerror="this.remove()">`).join("");
+
   /* ---------- Éléments fixes (barre, pied de page) ---------- */
   function renderChrome() {
     document.documentElement.lang = lang;
     document.documentElement.dataset.theme = theme;
     document.title = `${C.name} — e-Portfolio (${C.school} ${C.year})`;
     $("#brand").textContent = C.name;
-    $("#nav").innerHTML = ["home", "education", "projects", "mobility", "civic", "sports", "career"]
+    $("#nav").innerHTML = ["home", "education", "projects", "mobility", "civic", "hobbies", "career"]
       .map((k) => `<a href="${k === "projects" ? "#/projects" : "#" + k}" data-k="${k}">${esc(T().nav[k])}</a>`).join("");
     $("#cvLink").textContent = T().cvLabel;
     $("#cvLink").href = C.cv[lang];
@@ -40,7 +46,18 @@
       <h2>${esc(h.skillsTitle)}</h2>
       <p>${h.skills.map((s) => `<span class="tag">${esc(s)}</span>`).join("")}</p>
       <h2>${esc(h.interestsTitle)}</h2>
-      <p>${esc(h.interests)}</p>
+      <div class="interests">
+        ${h.interests.map((i) => {
+          const src = (C.interestImages || {})[i.id];
+          return `
+          <a class="interest" href="${esc(i.href || "#home")}">
+            <div class="int-media${src ? "" : " noimg"}" data-icon="${esc(i.icon || "")}">
+              ${src ? `<img src="${esc(src)}" alt="${esc(i.title)}" loading="lazy" onerror="this.parentNode.classList.add('noimg');this.remove()">` : ""}
+            </div>
+            <div class="int-body"><h3>${esc(i.title)}</h3><p>${esc(i.text)}</p>${h.more ? `<span class="more">${esc(h.more)}</span>` : ""}</div>
+          </a>`;
+        }).join("")}
+      </div>
       ${h.languages ? `<h2>${esc(h.languagesTitle)}</h2><p>${esc(h.languages)}</p>` : ""}`;
   }
 
@@ -53,6 +70,7 @@
           <div class="tl-item">
             <div class="tl-date">${esc(p.date)}</div>
             <a class="card" href="#/projects/${esc(p.id)}">
+              <div class="cover">${imgs(photosOf(p.id, p.images).slice(0, 1), "cover-img").replace(" data-zoom", "")}</div>
               <h3>${esc(p.title)}</h3>
               <p>${esc(p.summary)}</p>
               ${(p.tags || []).map((t) => `<span class="tag">${esc(t)}</span>`).join("")}
@@ -73,21 +91,29 @@
       <p>${(p.tags || []).map((t) => `<span class="tag">${esc(t)}</span>`).join("")}</p>
       ${block(L.context, p.context)}${block(L.role, p.role)}${block(L.methods, p.methods)}
       ${block(L.results, p.results)}${block(L.lessons, p.lessons)}
-      ${(p.images || []).length ? `<div class="gallery">${p.images.map((i) => `<img src="${esc(i)}" alt="">`).join("")}</div>` : ""}
+      <div class="gallery">${imgs(photosOf(p.id, p.images), "g-img")}</div>
       ${p.link ? `<p><a class="btn" href="${esc(p.link)}" target="_blank" rel="noopener">${esc(L.link)}</a></p>` : ""}`;
   }
 
+  // Sections avec photos : mobilité, engagement, loisirs. Formation et carrière restent sans photo.
+  const PHOTO_SECTIONS = ["mobility", "civic", "hobbies"];
   function pageSection(key) {
     const s = T()[key];
+    const withPhotos = PHOTO_SECTIONS.includes(key);
+    const L = T().labels;
     return `
       <h1>${esc(s.title)}</h1>
       <p class="lead">${esc(s.intro)}</p>
-      <div class="cards">
+      <div class="cards${key === "hobbies" ? " feature" : ""}">
         ${s.items.map((i) => `
           <div class="card">
-            ${i.date ? `<div class="tl-date">${esc(i.date)}</div>` : ""}
-            <h3>${esc(i.title)}</h3>
-            <p>${esc(i.text)}</p>
+            ${withPhotos ? `<div class="thumbs">${imgs(photosOf(i.id), "t-img")}</div>` : ""}
+            <div class="card-text">
+              ${i.date ? `<div class="tl-date">${esc(i.date)}</div>` : ""}
+              <h3>${esc(i.title)}</h3>
+              <p>${esc(i.text)}</p>
+              ${i.href ? `<a class="more" href="${esc(i.href)}">${esc(L.seeProject)}</a>` : ""}
+            </div>
           </div>`).join("")}
       </div>`;
   }
@@ -101,7 +127,7 @@
     else if (h === "#education") { key = "education"; html = pageSection("education"); }
     else if (h === "#mobility") { key = "mobility"; html = pageSection("mobility"); }
     else if (h === "#civic") { key = "civic"; html = pageSection("civic"); }
-    else if (h === "#sports") { key = "sports"; html = pageSection("sports"); }
+    else if (h === "#hobbies" || h === "#sports") { key = "hobbies"; html = pageSection("hobbies"); }
     else if (h === "#career") { key = "career"; html = pageSection("career"); }
     else { html = pageHome(); }
     $("#app").innerHTML = html;
@@ -121,6 +147,20 @@
   $("#langFr").addEventListener("click", () => setLang("fr"));
   $("#langEn").addEventListener("click", () => setLang("en"));
   window.addEventListener("hashchange", route);
+
+  /* Clic sur une photo : agrandissement. Clic ailleurs ou Échap : fermer. */
+  document.addEventListener("click", (e) => {
+    const img = e.target.closest && e.target.closest("img[data-zoom]");
+    if (!img) return;
+    const box = document.createElement("div");
+    box.className = "lightbox";
+    box.innerHTML = `<img src="${esc(img.getAttribute("src"))}" alt="">`;
+    const close = () => { box.remove(); document.removeEventListener("keydown", onKey); };
+    const onKey = (ev) => { if (ev.key === "Escape") close(); };
+    box.addEventListener("click", close);
+    document.addEventListener("keydown", onKey);
+    document.body.appendChild(box);
+  });
 
   renderChrome();
   route();

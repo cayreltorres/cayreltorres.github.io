@@ -6,12 +6,42 @@ window.CONTENT = {
   year: "MF2E",
   linkedin: "https://www.linkedin.com/in/camilo-cayrel-torres-390929335",
   cv: { fr: "assets/CV_FR.pdf", en: "assets/CV_EN.pdf" },
-  photo: "assets/photo_profil.jpeg",
+  photo: "assets/photo.jpg",
+  // Photos des centres d'intérêt (une seule fois pour FR + EN). Si le fichier n'existe pas, une icône s'affiche à la place.
+  // Photos des projets, de la mobilité, de l'engagement et des loisirs : une liste par bloc, partagée FR + EN.
+  // Dépose les fichiers dans assets/ avec ces noms (ou change les noms ici). Un fichier absent est simplement ignoré.
+  // Pas de photos pour Formation et Carrière (volontaire).
+  photos: {
+    // --- Projets ---
+    "projet-numerique-recherche": [],   // projet à venir : à remplir plus tard
+    "objet-connecte":            ["assets/projets/objet-connecte-1.jpg", "assets/projets/objet-connecte-2.jpg"],
+    "expedition-danube":         ["assets/projets/danube-1.jpg", "assets/projets/danube-2.jpg", "assets/projets/danube-3.jpg"],
+    "centrales-maremotrices":    ["assets/projets/maremotrice-1.jpg", "assets/projets/maremotrice-2.jpg"],
+    // --- Mobilité ---
+    "mob-unam":                  [],
+    "mob-danube":                ["assets/projets/danube-1.jpg", "assets/projets/danube-2.jpg"],
+    "mob-europe":                ["assets/mobilite/europe-2024-1.jpg", "assets/mobilite/europe-2024-2.jpg"],
+    // --- Engagement ---
+    "civ-monde":                 [],
+    "civ-energies":              [],
+    "civ-danube":                ["assets/projets/danube-3.jpg"],
+    // --- Loisirs ---
+    "hob-sport":                 ["assets/loisirs/velo-1.jpg", "assets/loisirs/velo-2.jpg"],
+    "hob-music":                 ["assets/loisirs/musique-1.jpg", "assets/loisirs/musique-2.jpg"]
+  },
+
+  // Photos du bandeau « Centres d'intérêt » de l'accueil (une photo par bloc).
+  interestImages: {
+    sport:   "assets/interets/sport.jpg",
+    music:   "assets/interets/musique.jpg",
+    travel:  "assets/interets/voyages.jpg",
+    world:   "assets/interets/actualite.jpg"
+  },
 
   /* ======================= FRANÇAIS ======================= */
   fr: {
     nav: { home: "Accueil", education: "Formation", projects: "Projets", mobility: "Mobilité",
-           civic: "Engagement", sports: "Sports", career: "Carrière" },
+           civic: "Engagement", hobbies: "Loisirs", career: "Carrière" },
     cvLabel: "CV (FR)",
     home: {
       title: "Bonjour, je suis Camilo Cayrel Torres",
@@ -21,7 +51,13 @@ window.CONTENT = {
       skills: ["ANSYS Fluent", "CFD", "Python", "MATLAB", "EDP", "Différences finies",
                "Turbulence", "Transferts thermiques", "Électronique de puissance", "Traitement du signal"],
       interestsTitle: "Centres d'intérêt",
-      interests: "Sport (VTT, vélo, course à pied), musique (violon, contrebasse, guitare, piano, jazz), géopolitique et écologie, voyages en autonomie.",
+      more: "En savoir plus →",
+      interests: [
+        { id: "sport", href: "#hobbies", icon: "🚵", title: "Sport", text: "Entraîneur de VTT certifié, cycliste et coureur à pied." },
+        { id: "music", href: "#hobbies", icon: "🎻", title: "Musique", text: "Violon, contrebasse, guitare et piano. Une vraie passion pour le jazz." },
+        { id: "travel", href: "#mobility", icon: "🧭", title: "Voyages en autonomie", text: "Un mois à travers l'Europe en 2024, puis à vélo le long du Danube en 2025, autofinancés ou financés par la Fondation Zellidja." },
+        { id: "world", href: "#civic", icon: "🌍", title: "Regard sur le monde", text: "Je lis l'actualité chaque jour, avec un intérêt pour la géopolitique et l'écologie." }
+      ],
       languagesTitle: "Langues",
       languages: "Français (natif) · Espagnol (natif) · Anglais (professionnel complet) · Italien (notions)"
     },
@@ -76,11 +112,11 @@ window.CONTENT = {
       title: "Mobilité internationale",
       intro: "Un projet de recherche au Mexique et une expérience de voyage en autonomie à travers l'Europe.",
       items: [
-        { title: "Stage de recherche de Master 1 — UNAM (Mexique)", date: "07/06/2027 – 10/09/2027 (projet)",
+        { id: "mob-unam", title: "Stage de recherche de Master 1 — UNAM (Mexique)", date: "07/06/2027 – 10/09/2027 (projet)",
           text: "Je recherche un stage de recherche dans un laboratoire de l'UNAM pour appliquer mes compétences en mécanique des fluides et calcul numérique aux énergies renouvelables, et approfondir ce domaine." },
-        { title: "Expédition à vélo le long du Danube", date: "07/2025",
+        { id: "mob-danube", href: "#/projects/expedition-danube", title: "Expédition à vélo le long du Danube", date: "07/2025",
           text: "Un mois en autonomie, de la source du Danube jusqu'à Budapest, financé par la Fondation Zellidja." },
-        { title: "Voyage d'un mois à travers l'Europe", date: "été 2024",
+        { id: "mob-europe", title: "Voyage d'un mois à travers l'Europe", date: "été 2024",
           text: "Voyage planifié et réalisé en autonomie, autofinancé." }
       ]
     },
@@ -88,22 +124,24 @@ window.CONTENT = {
       title: "Engagement citoyen & développement durable",
       intro: "Une conscience globale nourrie par l'actualité, l'écologie et les énergies renouvelables.",
       items: [
-        { title: "Conscience globale", date: "au quotidien",
+        { id: "civ-monde", title: "Conscience globale", date: "au quotidien",
           text: "Je lis l'actualité tous les jours, avec un intérêt particulier pour la géopolitique et l'écologie." },
-        { title: "Énergies renouvelables", date: "",
+        { id: "civ-energies", href: "#/projects/centrales-maremotrices", title: "Énergies renouvelables", date: "",
           text: "Mon orientation en mécanique des fluides est motivée par les énergies renouvelables : projet sur les centrales marémotrices, puis projet de stage à l'UNAM." },
-        { title: "Ressources naturelles le long du Danube", date: "07/2025",
+        { id: "civ-danube", href: "#/projects/expedition-danube", title: "Ressources naturelles le long du Danube", date: "07/2025",
           text: "Étude de terrain sur l'exploitation des ressources naturelles, menée pendant mon expédition à vélo." }
       ]
     },
-    sports: {
-      title: "Sports & musique",
-      intro: "Le sport et la musique sont deux piliers de mon équilibre.",
+    hobbies: {
+      title: "Loisirs & passions",
+      intro: "Au-delà des études : le sport, la musique et ce qui m'équilibre au quotidien.",
       items: [
-        { title: "VTT, vélo et course à pied", date: "",
-          text: "Entraîneur de VTT certifié, cycliste et coureur à pied." },
-        { title: "Musique et jazz", date: "",
+        { id: "hob-sport", href: "#/projects/expedition-danube", title: "Sport : VTT, vélo et course à pied", date: "",
+          text: "Entraîneur de VTT certifié, cycliste et coureur à pied. Le vélo m'a aussi emmené loin : en 2025, un mois en solitaire de la source du Danube jusqu'à Budapest." },
+        { id: "hob-music", title: "Musique et jazz", date: "",
           text: "Violoniste, contrebassiste, guitariste et pianiste. J'aime particulièrement le jazz." }
+        // À COMPLÉTER : pour ajouter un autre loisir, copie un bloc ci-dessus (avec un nouvel id, ex. "hob-lecture")
+        // et déclare ses photos dans « photos » en haut du fichier. Fais la même chose dans le bloc anglais.
       ]
     },
     career: {
@@ -121,14 +159,14 @@ window.CONTENT = {
       ]
     },
     labels: { back: "← Retour aux projets", context: "Contexte", role: "Mon rôle", methods: "Méthodes & outils",
-              results: "Résultats", lessons: "Enseignements", link: "Voir le projet", notFound: "Page introuvable." },
+              results: "Résultats", lessons: "Enseignements", link: "Voir le projet", seeProject: "Voir le projet →", notFound: "Page introuvable." },
     copyright: "© Camilo Cayrel Torres — ENSEEIHT"
   },
 
   /* ======================= ENGLISH ======================= */
   en: {
     nav: { home: "Home", education: "Education", projects: "Projects", mobility: "Mobility",
-           civic: "Engagement", sports: "Sports", career: "Career" },
+           civic: "Engagement", hobbies: "Hobbies", career: "Career" },
     cvLabel: "CV (EN)",
     home: {
       title: "Hi, I'm Camilo Cayrel Torres",
@@ -138,7 +176,13 @@ window.CONTENT = {
       skills: ["ANSYS Fluent", "CFD", "Python", "MATLAB", "PDEs", "Finite differences",
                "Turbulence", "Heat transfer", "Power electronics", "Signal processing"],
       interestsTitle: "Interests",
-      interests: "Sports (mountain biking, cycling, running), music (violin, double bass, guitar, piano, jazz), geopolitics and ecology, independent travel.",
+      more: "Read more →",
+      interests: [
+        { id: "sport", href: "#hobbies", icon: "🚵", title: "Sport", text: "Certified mountain-bike coach, cyclist and runner." },
+        { id: "music", href: "#hobbies", icon: "🎻", title: "Music", text: "Violin, double bass, guitar and piano. A real passion for jazz." },
+        { id: "travel", href: "#mobility", icon: "🧭", title: "Independent travel", text: "A month across Europe in 2024, then by bike along the Danube in 2025, self-funded or backed by the Zellidja Foundation." },
+        { id: "world", href: "#civic", icon: "🌍", title: "A view on the world", text: "I read the news every day, with a focus on geopolitics and ecology." }
+      ],
       languagesTitle: "Languages",
       languages: "French (native) · Spanish (native) · English (full professional proficiency) · Italian (basic)"
     },
@@ -193,11 +237,11 @@ window.CONTENT = {
       title: "International mobility",
       intro: "A research project in Mexico and independent travel experience across Europe.",
       items: [
-        { title: "Master 1 research internship — UNAM (Mexico)", date: "7 Jun 2027 – 10 Sep 2027 (planned)",
+        { id: "mob-unam", title: "Master 1 research internship — UNAM (Mexico)", date: "7 Jun 2027 – 10 Sep 2027 (planned)",
           text: "I am looking for a research internship in a UNAM laboratory to apply my skills in fluid mechanics and numerical computation to renewable energy, and to deepen this field." },
-        { title: "Cycling expedition along the Danube", date: "07/2025",
+        { id: "mob-danube", href: "#/projects/expedition-danube", title: "Cycling expedition along the Danube", date: "07/2025",
           text: "One month of independent travel, from the source of the Danube to Budapest, funded by the Zellidja Foundation." },
-        { title: "One-month trip across Europe", date: "summer 2024",
+        { id: "mob-europe", title: "One-month trip across Europe", date: "summer 2024",
           text: "Independently planned and carried out, self-funded." }
       ]
     },
@@ -205,22 +249,23 @@ window.CONTENT = {
       title: "Civic engagement & sustainability",
       intro: "A global awareness fed by current affairs, ecology and renewable energy.",
       items: [
-        { title: "Global awareness", date: "daily",
+        { id: "civ-monde", title: "Global awareness", date: "daily",
           text: "I read the news every day, with a particular focus on geopolitics and ecology." },
-        { title: "Renewable energy", date: "",
+        { id: "civ-energies", href: "#/projects/centrales-maremotrices", title: "Renewable energy", date: "",
           text: "My move towards fluid mechanics is driven by renewable energy: a tidal power study project, then my internship project at UNAM." },
-        { title: "Natural resources along the Danube", date: "07/2025",
+        { id: "civ-danube", href: "#/projects/expedition-danube", title: "Natural resources along the Danube", date: "07/2025",
           text: "Field study on the exploitation of natural resources, carried out during my cycling expedition." }
       ]
     },
-    sports: {
-      title: "Sports & music",
-      intro: "Sport and music are two pillars of my balance.",
+    hobbies: {
+      title: "Hobbies & passions",
+      intro: "Beyond my studies: sport, music and what keeps me balanced day to day.",
       items: [
-        { title: "Mountain biking, cycling and running", date: "",
-          text: "Certified mountain-bike coach, cyclist and runner." },
-        { title: "Music and jazz", date: "",
+        { id: "hob-sport", href: "#/projects/expedition-danube", title: "Sport: mountain biking, cycling and running", date: "",
+          text: "Certified mountain-bike coach, cyclist and runner. Cycling also took me far: in 2025, a month solo from the source of the Danube to Budapest." },
+        { id: "hob-music", title: "Music and jazz", date: "",
           text: "Violinist, double bassist, guitarist and pianist. I especially enjoy jazz." }
+        // TO COMPLETE: to add another hobby, copy a block above (with a new id) and declare its photos in "photos" at the top.
       ]
     },
     career: {
@@ -238,7 +283,7 @@ window.CONTENT = {
       ]
     },
     labels: { back: "← Back to projects", context: "Context", role: "My role", methods: "Methods & tools",
-              results: "Results", lessons: "Lessons learned", link: "See the project", notFound: "Page not found." },
+              results: "Results", lessons: "Lessons learned", link: "See the project", seeProject: "See the project →", notFound: "Page not found." },
     copyright: "© Camilo Cayrel Torres — ENSEEIHT"
   }
 };
