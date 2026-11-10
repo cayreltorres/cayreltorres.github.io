@@ -65,6 +65,21 @@ h2 { margin-top: 2.2rem; }
 .gallery { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: .8rem; margin: 1rem 0; }
 .gallery img { width: 100%; border-radius: var(--radius); }
 
+/* Contact */
+.contact-form { display: grid; gap: 1rem; max-width: 640px; margin-top: 1.2rem; }
+.contact-form label { display: grid; gap: .35rem; font-weight: 600; font-size: .95rem; }
+.contact-form input[type=text], .contact-form input[type=email], .contact-form textarea {
+  font: inherit; font-weight: 400; padding: .65rem .8rem; border: 1px solid var(--border); border-radius: 10px;
+  background: var(--card); color: var(--fg); width: 100%; }
+.contact-form input:focus, .contact-form textarea:focus { outline: 2px solid var(--accent); outline-offset: 1px; }
+.contact-form button { justify-self: start; padding: .55rem 1.3rem; font-size: 1rem; }
+.hp { position: absolute; left: -9999px; width: 1px; height: 1px; opacity: 0; }
+.notice { padding: .7rem 1rem; border-radius: 10px; background: var(--card); border: 1px solid var(--border); }
+.notice.ok { border-color: #2e9e5b; } .notice.bad { border-color: #d14b4b; }
+.muted-note { color: var(--muted); font-size: .88rem; max-width: 640px; }
+.contact-alt, .cta { margin-top: 1.5rem; }
+.cta .btn { padding: .55rem 1.3rem; font-size: 1rem; }
+
 /* Langues */
 .langs { display: grid; grid-template-columns: repeat(auto-fit, minmax(190px, 1fr)); gap: .8rem; margin-top: 1rem; }
 .lang-chip { display: flex; align-items: center; gap: .8rem; background: var(--card); border: 1px solid var(--border);

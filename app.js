@@ -20,7 +20,7 @@
     document.documentElement.dataset.theme = theme;
     document.title = `${C.name} — e-Portfolio (${C.school} ${C.year})`;
     $("#brand").textContent = C.name;
-    $("#nav").innerHTML = ["home", "education", "projects", "mobility", "civic", "hobbies", "career"]
+    $("#nav").innerHTML = ["home", "education", "projects", "mobility", "civic", "hobbies", "career", "contact"]
       .map((k) => `<a href="${k === "projects" ? "#/projects" : "#" + k}" data-k="${k}">${esc(T().nav[k])}</a>`).join("");
     $("#cvLink").textContent = T().cvLabel;
     $("#cvLink").href = C.cv[lang];
@@ -124,6 +124,62 @@
       </div>`;
   }
 
+  /* ---------- Contact : formulaire Web3Forms (l'adresse mail n'est pas dans le site) ---------- */
+  const KEY_OK = () => /^[0-9a-f-]{30,}$/i.test(((C.contact || {}).accessKey) || "");
+  let formShownAt = 0;
+  function pageContact() {
+    const t = T().contact;
+    const li = `<p class="contact-alt"><a class="btn" href="${esc(C.linkedin)}" target="_blank" rel="noopener">${esc(t.linkedin)}</a></p>`;
+    if (!KEY_OK()) return `<h1>${esc(t.title)}</h1><p class="lead">${esc(t.intro)}</p><p class="notice">${esc(t.unavailable)}</p>${li}`;
+    formShownAt = Date.now();
+    return `
+      <h1>${esc(t.title)}</h1>
+      <p class="lead">${esc(t.intro)}</p>
+      <form id="contactForm" class="contact-form" novalidate>
+        <input type="hidden" name="access_key" value="${esc(C.contact.accessKey)}">
+        <input type="hidden" name="subject" value="Portfolio — nouveau message">
+        <input type="hidden" name="from_name" value="Portfolio ${esc(C.name)}">
+        <input type="checkbox" name="botcheck" class="hp" tabindex="-1" autocomplete="off" aria-hidden="true">
+        <label>${esc(t.name)}<input type="text" name="name" required maxlength="80" autocomplete="name"></label>
+        <label>${esc(t.email)}<input type="email" name="email" required maxlength="120" autocomplete="email"></label>
+        <label>${esc(t.message)}<textarea name="message" required rows="6" maxlength="3000"></textarea></label>
+        <div class="h-captcha" data-captcha="true"></div>
+        <button class="btn on" type="submit">${esc(t.send)}</button>
+        <p id="formResult" class="notice" role="status" hidden></p>
+      </form>
+      <p class="muted-note">${esc(t.note)}</p>
+      ${li}`;
+  }
+  function afterContact() {
+    const form = $("#contactForm");
+    if (!form) return;
+    const old = document.getElementById("w3f-script");
+    if (old) old.remove();
+    const s = document.createElement("script");
+    s.id = "w3f-script"; s.src = "https://web3forms.com/client/script.js"; s.async = true; s.defer = true;
+    document.body.appendChild(s);               // le script tiers n'est chargé que sur cette page
+    const t = T().contact, out = $("#formResult"), btn = form.querySelector("button");
+    const say = (msg, ok) => { out.hidden = false; out.textContent = msg; out.className = "notice " + (ok ? "ok" : "bad"); };
+    form.addEventListener("submit", async (e) => {
+      e.preventDefault();
+      const f = new FormData(form);
+      if (!f.get("name").trim() || !/^\S+@\S+\.\S+$/.test(f.get("email")) || !f.get("message").trim()) { form.reportValidity && form.reportValidity(); say(t.error, false); return; }
+      if (Date.now() - formShownAt < 4000) return say(t.tooFast, false);       // piège anti-robot : envoi trop rapide
+      if (f.get("botcheck")) return;                                              // piège anti-robot : champ caché rempli
+      const cap = form.querySelector("textarea[name=h-captcha-response]");
+      if (cap && !cap.value) return say(t.captcha, false);
+      btn.disabled = true; btn.textContent = t.sending;
+      try {
+        const r = await fetch("https://api.web3forms.com/submit", {
+          method: "POST", headers: { "Content-Type": "application/json", Accept: "application/json" },
+          body: JSON.stringify(Object.fromEntries(f)) });
+        const d = await r.json();
+        if (r.ok && d.success !== false) { say(t.success, true); form.reset(); } else say(t.error, false);
+      } catch (_) { say(t.error, false); }
+      btn.disabled = false; btn.textContent = t.send;
+    });
+  }
+
   /* ---------- Routeur (par hash) ---------- */
   function route() {
     const h = location.hash || "#home";
@@ -135,10 +191,12 @@
     else if (h === "#civic") { key = "civic"; html = pageSection("civic"); }
     else if (h === "#hobbies" || h === "#sports") { key = "hobbies"; html = pageSection("hobbies"); }
     else if (h === "#career") { key = "career"; html = pageSection("career"); }
+    else if (h === "#contact") { key = "contact"; html = pageContact(); }
     else { html = pageHome(); }
     $("#app").innerHTML = html;
     document.querySelectorAll("#nav a").forEach((a) => a.classList.toggle("active", a.dataset.k === key));
     $("#nav").classList.remove("open");
+    if (key === "contact") afterContact();
     window.scrollTo(0, 0);
   }
 

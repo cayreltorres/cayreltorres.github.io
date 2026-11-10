@@ -7,6 +7,9 @@ window.CONTENT = {
   linkedin: "https://www.linkedin.com/in/camilo-cayrel-torres-390929335",
   cv: { fr: "assets/CV_FR.pdf", en: "assets/CV_EN.pdf" },
   photo: "assets/photo.jpg",
+  // Formulaire de contact (Web3Forms). Ton adresse mail n'est JAMAIS écrite dans ce site :
+  // elle est enregistrée chez Web3Forms, qui te transmet les messages. Colle ici ta clé d'accès (voir le guide).
+  contact: { accessKey: "19e96e25-0678-4dc6-b807-dbaed064b76b" },
   showFlags: true,   // false = langues affichées sans drapeaux
   // Photos des centres d'intérêt (une seule fois pour FR + EN). Si le fichier n'existe pas, une icône s'affiche à la place.
   // Photos des projets, de la mobilité, de l'engagement et des loisirs : une liste par bloc, partagée FR + EN.
@@ -42,7 +45,7 @@ window.CONTENT = {
   /* ======================= FRANÇAIS ======================= */
   fr: {
     nav: { home: "Accueil", education: "Formation", projects: "Projets", mobility: "Mobilité",
-           civic: "Engagement", hobbies: "Loisirs", career: "Carrière" },
+           civic: "Engagement", hobbies: "Loisirs", career: "Carrière", contact: "Contact" },
     cvLabel: "CV (FR)",
     home: {
       title: "Bonjour, je suis Camilo Cayrel Torres",
@@ -165,6 +168,19 @@ window.CONTENT = {
           text: "Mécanique des fluides, énergie et environnement : d'abord un stage de recherche de Master 1 à l'UNAM sur les énergies renouvelables, pour approfondir ce domaine." }
       ]
     },
+    contact: {
+      title: "Me contacter",
+      intro: "Une question, une opportunité de stage, une idée de collaboration ? Écris-moi, je réponds dès que possible.",
+      name: "Ton nom", email: "Ton e-mail (pour que je puisse te répondre)", message: "Ton message",
+      send: "Envoyer le message", sending: "Envoi en cours…",
+      success: "Message envoyé, merci ! Je te réponds bientôt.",
+      error: "L'envoi a échoué. Réessaie plus tard ou écris-moi sur LinkedIn.",
+      captcha: "Merci de cocher la vérification anti-robot avant d'envoyer.",
+      tooFast: "Merci de patienter quelques secondes avant d'envoyer.",
+      unavailable: "Le formulaire n'est pas encore activé. En attendant, tu peux me joindre sur LinkedIn.",
+      note: "Ton message est envoyé par un service sécurisé : mon adresse e-mail n'apparaît pas sur ce site, et les messages sont filtrés contre le spam. Merci de ne pas joindre de liens suspects.",
+      linkedin: "Ou écris-moi sur LinkedIn", cta: "Me contacter →"
+    },
     labels: { back: "← Retour aux projets", context: "Contexte", role: "Mon rôle", methods: "Méthodes & outils",
               results: "Résultats", lessons: "Enseignements", link: "Voir le projet", seeProject: "Voir le projet →", notFound: "Page introuvable." },
     copyright: "© Camilo Cayrel Torres — ENSEEIHT"
@@ -173,7 +189,7 @@ window.CONTENT = {
   /* ======================= ENGLISH ======================= */
   en: {
     nav: { home: "Home", education: "Education", projects: "Projects", mobility: "Mobility",
-           civic: "Engagement", hobbies: "Hobbies", career: "Career" },
+           civic: "Engagement", hobbies: "Hobbies", career: "Career", contact: "Contact" },
     cvLabel: "CV (EN)",
     home: {
       title: "Hi, I'm Camilo Cayrel Torres",
@@ -293,6 +309,19 @@ window.CONTENT = {
         { title: "Career project", date: "2027 →",
           text: "Fluid mechanics, energy and environment: first a Master 1 research internship at UNAM on renewable energy, to deepen this field." }
       ]
+    },
+    contact: {
+      title: "Contact me",
+      intro: "A question, an internship opportunity, a collaboration idea? Write to me, I will reply as soon as possible.",
+      name: "Your name", email: "Your email (so I can reply)", message: "Your message",
+      send: "Send message", sending: "Sending…",
+      success: "Message sent, thank you! I will get back to you soon.",
+      error: "Sending failed. Please try again later or message me on LinkedIn.",
+      captcha: "Please complete the anti-robot check before sending.",
+      tooFast: "Please wait a few seconds before sending.",
+      unavailable: "The form is not active yet. In the meantime, you can reach me on LinkedIn.",
+      note: "Your message is sent through a secure service: my email address does not appear on this site, and messages are spam-filtered. Please do not include suspicious links.",
+      linkedin: "Or message me on LinkedIn", cta: "Contact me →"
     },
     labels: { back: "← Back to projects", context: "Context", role: "My role", methods: "Methods & tools",
               results: "Results", lessons: "Lessons learned", link: "See the project", seeProject: "See the project →", notFound: "Page not found." },
