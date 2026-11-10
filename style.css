@@ -65,6 +65,14 @@ h2 { margin-top: 2.2rem; }
 .gallery { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: .8rem; margin: 1rem 0; }
 .gallery img { width: 100%; border-radius: var(--radius); }
 
+/* Langues */
+.langs { display: grid; grid-template-columns: repeat(auto-fit, minmax(190px, 1fr)); gap: .8rem; margin-top: 1rem; }
+.lang-chip { display: flex; align-items: center; gap: .8rem; background: var(--card); border: 1px solid var(--border);
+  border-radius: var(--radius); padding: .7rem 1rem; }
+.lang-chip .flag { font-size: 1.8rem; line-height: 1; }
+.lang-chip strong { display: block; }
+.lang-chip span:not(.flag) { color: var(--muted); font-size: .9rem; }
+
 /* Centres d'intérêt en blocs */
 .interests { display: grid; grid-template-columns: repeat(auto-fit, minmax(210px, 1fr)); gap: 1rem; margin-top: 1rem; }
 .interest { background: var(--card); border: 1px solid var(--border); border-radius: var(--radius);

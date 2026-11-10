@@ -7,6 +7,7 @@ window.CONTENT = {
   linkedin: "https://www.linkedin.com/in/camilo-cayrel-torres-390929335",
   cv: { fr: "assets/CV_FR.pdf", en: "assets/CV_EN.pdf" },
   photo: "assets/photo.jpg",
+  showFlags: true,   // false = langues affichées sans drapeaux
   // Photos des centres d'intérêt (une seule fois pour FR + EN). Si le fichier n'existe pas, une icône s'affiche à la place.
   // Photos des projets, de la mobilité, de l'engagement et des loisirs : une liste par bloc, partagée FR + EN.
   // Dépose les fichiers dans assets/ avec ces noms (ou change les noms ici). Un fichier absent est simplement ignoré.
@@ -59,7 +60,13 @@ window.CONTENT = {
         { id: "world", href: "#civic", icon: "🌍", title: "Regard sur le monde", text: "Je lis l'actualité chaque jour, avec un intérêt pour la géopolitique et l'écologie." }
       ],
       languagesTitle: "Langues",
-      languages: "Français (natif) · Espagnol (natif) · Anglais (professionnel complet) · Italien (notions)"
+      languages: [
+        { flag: "🇫🇷", name: "Français", level: "Natif" },
+        { flag: "🇪🇸", name: "Espagnol", level: "Natif" },
+        { flag: "🇬🇧", name: "Anglais", level: "Professionnel complet" },
+        { flag: "🇮🇹", name: "Italien", level: "Notions" }
+        // Si tu as passé un test (DELE, TOEIC, TOEFL…), ajoute : detail: "TOEIC 950" (puis le même en anglais)
+      ]
     },
     education: {
       title: "Formation",
@@ -113,7 +120,7 @@ window.CONTENT = {
       intro: "Un projet de recherche au Mexique et une expérience de voyage en autonomie à travers l'Europe.",
       items: [
         { id: "mob-unam", title: "Stage de recherche de Master 1 — UNAM (Mexique)", date: "07/06/2027 – 10/09/2027 (projet)",
-          text: "Je recherche un stage de recherche dans un laboratoire de l'UNAM pour appliquer mes compétences en mécanique des fluides et calcul numérique aux énergies renouvelables, et approfondir ce domaine." },
+          text: "Je recherche un stage de recherche dans un laboratoire de l'UNAM pour appliquer mes compétences en mécanique des fluides et calcul numérique aux énergies renouvelables, et approfondir ce domaine. Hispanophone natif, je peux travailler au quotidien en espagnol comme en anglais." },
         { id: "mob-danube", href: "#/projects/expedition-danube", title: "Expédition à vélo le long du Danube", date: "07/2025",
           text: "Un mois en autonomie, de la source du Danube jusqu'à Budapest, financé par la Fondation Zellidja." },
         { id: "mob-europe", title: "Voyage d'un mois à travers l'Europe", date: "été 2024",
@@ -184,7 +191,12 @@ window.CONTENT = {
         { id: "world", href: "#civic", icon: "🌍", title: "A view on the world", text: "I read the news every day, with a focus on geopolitics and ecology." }
       ],
       languagesTitle: "Languages",
-      languages: "French (native) · Spanish (native) · English (full professional proficiency) · Italian (basic)"
+      languages: [
+        { flag: "🇫🇷", name: "French", level: "Native" },
+        { flag: "🇪🇸", name: "Spanish", level: "Native" },
+        { flag: "🇬🇧", name: "English", level: "Full professional proficiency" },
+        { flag: "🇮🇹", name: "Italian", level: "Basic" }
+      ]
     },
     education: {
       title: "Education",
@@ -238,7 +250,7 @@ window.CONTENT = {
       intro: "A research project in Mexico and independent travel experience across Europe.",
       items: [
         { id: "mob-unam", title: "Master 1 research internship — UNAM (Mexico)", date: "7 Jun 2027 – 10 Sep 2027 (planned)",
-          text: "I am looking for a research internship in a UNAM laboratory to apply my skills in fluid mechanics and numerical computation to renewable energy, and to deepen this field." },
+          text: "I am looking for a research internship in a UNAM laboratory to apply my skills in fluid mechanics and numerical computation to renewable energy, and to deepen this field. As a native Spanish speaker, I can work day to day in Spanish as well as in English." },
         { id: "mob-danube", href: "#/projects/expedition-danube", title: "Cycling expedition along the Danube", date: "07/2025",
           text: "One month of independent travel, from the source of the Danube to Budapest, funded by the Zellidja Foundation." },
         { id: "mob-europe", title: "One-month trip across Europe", date: "summer 2024",

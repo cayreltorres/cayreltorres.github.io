@@ -45,6 +45,12 @@
       </section>
       <h2>${esc(h.skillsTitle)}</h2>
       <p>${h.skills.map((s) => `<span class="tag">${esc(s)}</span>`).join("")}</p>
+      ${h.languages ? `<h2>${esc(h.languagesTitle)}</h2>
+      <div class="langs">${h.languages.map((l) => `
+        <div class="lang-chip">
+          ${C.showFlags !== false && l.flag ? `<span class="flag" aria-hidden="true">${l.flag}</span>` : ""}
+          <div><strong>${esc(l.name)}</strong><span>${esc(l.level)}${l.detail ? " · " + esc(l.detail) : ""}</span></div>
+        </div>`).join("")}</div>` : ""}
       <h2>${esc(h.interestsTitle)}</h2>
       <div class="interests">
         ${h.interests.map((i) => {
@@ -58,7 +64,7 @@
           </a>`;
         }).join("")}
       </div>
-      ${h.languages ? `<h2>${esc(h.languagesTitle)}</h2><p>${esc(h.languages)}</p>` : ""}`;
+`;
   }
 
   function pageProjects() {
