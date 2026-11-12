@@ -137,3 +137,11 @@ a.interest { text-decoration: none; color: inherit; }
   .tools { display: none; }
   .nav.open ~ .tools { display: flex; }
 }
+
+/* Style des cartes de carrière et logos d'entreprises */
+.career-grid { grid-template-columns: 1fr; margin-bottom: 2rem; }
+.career-card { display: flex; flex-direction: column; gap: .6rem; }
+.career-header { display: flex; align-items: center; gap: 1rem; }
+.company-logo { width: 52px; height: 52px; object-fit: contain; background: #fff; border-radius: 10px; padding: 4px; border: 1px solid var(--border); }
+.company-logo-placeholder { font-size: 2rem; width: 52px; height: 52px; display: flex; align-items: center; justify-content: center; background: var(--border); border-radius: 10px; }
+.company-name { color: var(--accent); font-size: .95rem; }
