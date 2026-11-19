@@ -1,13 +1,13 @@
 :root {
-  --bg: #fbfaf7; --alt: #f3f1ec; --fg: #14202e; --muted: #5b6676; --card: #ffffff;
-  --accent: #0b5c8a; --accent-2: #e0892b; --border: #e3dfd6; --radius: 16px;
+  --bg: #f8fafc; --alt: #eef3f8; --fg: #14202e; --muted: #5b6676; --card: #ffffff;
+  --accent: #0b5c8a; --accent-2: #1f8a94; --border: #dce4ee; --radius: 16px;
   --shadow: 0 1px 2px rgba(20,32,46,.05), 0 8px 24px rgba(20,32,46,.06);
   --shadow-up: 0 2px 4px rgba(20,32,46,.06), 0 16px 36px rgba(20,32,46,.12);
   --head: 64px;
 }
 :root[data-theme="dark"] {
   --bg: #0e141b; --alt: #121a23; --fg: #e9eef5; --muted: #98a4b5; --card: #172029;
-  --accent: #5cb8e6; --accent-2: #f0a548; --border: #243140;
+  --accent: #5cb8e6; --accent-2: #5cc4c8; --border: #243140;
   --shadow: 0 1px 2px rgba(0,0,0,.3), 0 8px 24px rgba(0,0,0,.25);
   --shadow-up: 0 2px 4px rgba(0,0,0,.4), 0 16px 36px rgba(0,0,0,.4);
 }
@@ -20,7 +20,6 @@ body {
 }
 a { color: var(--accent); }
 h1, h2, h3 { line-height: 1.2; letter-spacing: -.01em; }
-h1, h2, .eyebrow { font-family: Georgia, "Iowan Old Style", "Palatino Linotype", serif; }
 
 /* ===== Barre du haut ===== */
 .topbar {
@@ -30,7 +29,7 @@ h1, h2, .eyebrow { font-family: Georgia, "Iowan Old Style", "Palatino Linotype",
   border-bottom: 1px solid transparent; transition: border-color .2s, box-shadow .2s;
 }
 .topbar.scrolled { border-bottom-color: var(--border); box-shadow: 0 4px 18px rgba(20,32,46,.06); }
-.brand { font-family: Georgia, serif; font-weight: 700; font-size: 1.05rem; text-decoration: none; color: var(--fg); white-space: nowrap; }
+.brand { font-weight: 700; font-size: 1.05rem; text-decoration: none; color: var(--fg); white-space: nowrap; }
 .nav { display: flex; gap: .15rem; margin-left: 1rem; flex: 1; }
 .nav a { white-space: nowrap; padding: .4rem .75rem; border-radius: 999px; text-decoration: none; color: var(--muted);
   font-size: .93rem; transition: background .2s, color .2s; }
