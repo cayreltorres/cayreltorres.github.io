@@ -170,7 +170,18 @@
 
   function secContact() {
     const t = T().contact;
-    return wrap("contact", head("contact", t.title, t.intro) +
+    const hasKey = !!(C.contact && C.contact.accessKey);
+    const form = hasKey ? `
+      <form class="contact-form reveal" id="contactForm" novalidate>
+        <label>${esc(t.name)}<input type="text" name="name" required autocomplete="name"></label>
+        <label>${esc(t.email)}<input type="email" name="email" required autocomplete="email"></label>
+        <label>${esc(t.message)}<textarea name="message" rows="6" required></textarea></label>
+        <input type="checkbox" name="botcheck" class="hp" tabindex="-1" autocomplete="off" aria-hidden="true">
+        <button class="btn primary" type="submit">${esc(t.send)}</button>
+        <div id="contactStatus" role="status"></div>
+        <p class="muted-note">${esc(t.note)}</p>
+      </form>` : "";
+    return wrap("contact", head("contact", t.title, t.intro) + form +
       `<p class="cta reveal"><a class="btn primary" href="${esc(C.linkedin)}" target="_blank" rel="noopener">${esc(t.linkedin)}</a>
        <a class="btn" href="${esc(C.cv[lang])}" target="_blank" rel="noopener">${esc(T().cvLabel)}</a></p>`);
   }
@@ -281,6 +292,41 @@
   $("#langFr").addEventListener("click", () => setLang("fr"));
   $("#langEn").addEventListener("click", () => setLang("en"));
   window.addEventListener("hashchange", () => route());
+
+  // Formulaire de contact (Web3Forms)
+  let formShownAt = Date.now();
+  document.addEventListener("submit", async (e) => {
+    const f = e.target.closest && e.target.closest("#contactForm");
+    if (!f) return;
+    e.preventDefault();
+    const t = T().contact;
+    const status = $("#contactStatus");
+    const say = (msg, ok) => { status.className = "notice " + (ok ? "ok" : "bad"); status.textContent = msg; };
+    if (f.botcheck.checked) return;
+    if (Date.now() - formShownAt < 3000) return say(t.tooFast, false);
+    if (!f.name.value.trim() || !f.email.value.trim() || !f.message.value.trim() || !f.email.validity.valid) return say(t.error, false);
+    const btn = f.querySelector("button[type=submit]");
+    btn.disabled = true; say(t.sending, true);
+    try {
+      const r = await fetch("https://api.web3forms.com/submit", {
+        method: "POST",
+        headers: { "Content-Type": "application/json", Accept: "application/json" },
+        body: JSON.stringify({
+          access_key: C.contact.accessKey,
+          subject: "Portfolio — " + f.name.value.trim(),
+          from_name: f.name.value.trim(),
+          name: f.name.value.trim(),
+          email: f.email.value.trim(),
+          message: f.message.value.trim(),
+          botcheck: ""
+        })
+      });
+      const d = await r.json().catch(() => ({}));
+      if (r.ok && d.success) { say(t.success, true); f.reset(); }
+      else say(t.error + (d.message ? " (" + d.message + ")" : ""), false);
+    } catch (err) { say(t.error, false); }
+    btn.disabled = false;
+  });
 
   // Ombre de la barre au défilement
   const onScroll = () => $(".topbar").classList.toggle("scrolled", window.scrollY > 8);
