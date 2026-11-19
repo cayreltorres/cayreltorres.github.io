@@ -1,23 +1,39 @@
 (function () {
   const C = window.CONTENT;
   const $ = (s) => document.querySelector(s);
-  let lang = localStorage.getItem("lang") || "fr";
-  let theme = localStorage.getItem("theme") ||
+  const store = {
+    get: (k) => { try { return localStorage.getItem(k); } catch (e) { return null; } },
+    set: (k, v) => { try { localStorage.setItem(k, v); } catch (e) {} }
+  };
+  let lang = store.get("lang") || "fr";
+  let theme = store.get("theme") ||
     (matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light");
 
+  const SECTIONS = ["home", "education", "projects", "mobility", "civic", "hobbies", "career", "contact"];
   const T = () => C[lang];
   const esc = (s) => String(s ?? "").replace(/[&<>"]/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]));
-  const photosOf = (id, fallback) => ((C.photos || {})[id] || fallback || []);
+
+  // Photos d'un bloc : C.photos[id] si déclaré, sinon assets/photos/<id>.jpg (convention),
+  // sinon rien. Une image introuvable disparaît toute seule (pas de trou dans la page).
+  const photosOf = (id, fallback) => {
+    if (!id) return fallback || [];
+    const p = (C.photos || {})[id];
+    if (p) return p;
+    if (fallback && fallback.length) return fallback;
+    return ["assets/photos/" + id + ".jpg"];
+  };
   const imgs = (list, cls) => list.map((src) =>
     `<img class="${cls}" src="${esc(src)}" alt="" loading="lazy" data-zoom onerror="this.remove()">`).join("");
 
+  /* ---------- Barre du haut ---------- */
   function renderChrome() {
     document.documentElement.lang = lang;
     document.documentElement.dataset.theme = theme;
     document.title = `${C.name} — e-Portfolio (${C.school} ${C.year})`;
     $("#brand").textContent = C.name;
-    $("#nav").innerHTML = ["home", "education", "projects", "mobility", "civic", "hobbies", "career", "contact"]
-      .map((k) => `<a href="${k === "projects" ? "#/projects" : "#" + k}" data-k="${k}">${esc(T().nav[k])}</a>`).join("");
+    $("#nav").innerHTML = SECTIONS
+      .map((k) => `<a href="#${k}" data-k="${k}">${esc(T().nav[k])}</a>`).join("") +
+      `<a class="nav-cv" href="${esc(C.cv[lang])}" target="_blank" rel="noopener">${esc(T().cvLabel)}</a>`;
     $("#cvLink").textContent = T().cvLabel;
     $("#cvLink").href = C.cv[lang];
     $("#liLink").href = C.linkedin;
@@ -27,175 +43,250 @@
     $("#langEn").classList.toggle("on", lang === "en");
   }
 
-  function pageHome() {
-    const h = T().home;
-    return `
-      <section class="hero">
-        <img src="${esc(C.photo)}" alt="${esc(C.name)}" onerror="this.style.display='none'">
-        <div>
-          <h1>${esc(h.title)}</h1>
-          <p class="lead">${esc(h.subtitle)}</p>
-          <p>${esc(h.intro)}</p>
-        </div>
-      </section>
-      <h2>${esc(h.skillsTitle)}</h2>
-      <p>${h.skills.map((s) => `<span class="tag">${esc(s)}</span>`).join("")}</p>
-      ${h.languages ? `<h2>${esc(h.languagesTitle)}</h2>
-      <div class="langs">${h.languages.map((l) => `
-        <div class="lang-chip">
-          ${C.showFlags !== false && l.flag ? `<span class="flag" aria-hidden="true">${l.flag}</span>` : ""}
-          <div><strong>${esc(l.name)}</strong><span>${esc(l.level)}${l.detail ? " · " + esc(l.detail) : ""}</span></div>
-        </div>`).join("")}</div>` : ""}
-      <h2>${esc(h.interestsTitle)}</h2>
-      <div class="interests">
-        ${h.interests.map((i) => {
-          const src = (C.interestImages || {})[i.id];
-          return `
-          <a class="interest" href="${esc(i.href || "#home")}">
-            <div class="int-media${src ? "" : " noimg"}" data-icon="${esc(i.icon || "")}">
-              ${src ? `<img src="${esc(src)}" alt="${esc(i.title)}" loading="lazy" onerror="this.parentNode.classList.add('noimg');this.remove()">` : ""}
-            </div>
-            <div class="int-body"><h3>${esc(i.title)}</h3><p>${esc(i.text)}</p>${h.more ? `<span class="more">${esc(h.more)}</span>` : ""}</div>
-          </a>`;
-        }).join("")}
-      </div>`;
-  }
+  /* ---------- Briques ---------- */
+  const head = (k, title, intro) => `
+    <header class="sec-head reveal">
+      <span class="eyebrow">${String(SECTIONS.indexOf(k) + 1).padStart(2, "0")}</span>
+      <h2>${esc(title)}</h2>
+      ${intro ? `<p class="lead">${esc(intro)}</p>` : ""}
+    </header>`;
 
-  function pageProjects() {
-    const list = [...T().projects].sort((a, b) => String(b.sort || b.date).localeCompare(String(a.sort || a.date)));
-    return `
-      <h1>${esc(T().projectsTitle)}</h1>
-      <div class="timeline">
-        ${list.map((p) => `
-          <div class="tl-item">
-            <div class="tl-date">${esc(p.date)}</div>
-            <a class="card" href="#/projects/${esc(p.id)}">
-              <div class="cover">${imgs(photosOf(p.id, p.images).slice(0, 1), "cover-img").replace(" data-zoom", "")}</div>
-              <h3>${esc(p.title)}</h3>
-              <p>${esc(p.summary)}</p>
-              ${(p.tags || []).map((t) => `<span class="tag">${esc(t)}</span>`).join("")}
-            </a>
-          </div>`).join("")}
-      </div>`;
-  }
-
-  function pageProject(id) {
-    const p = T().projects.find((x) => x.id === id);
-    if (!p) return `<p>${esc(T().labels.notFound)}</p>`;
-    const L = T().labels;
-    const block = (label, txt) => (txt ? `<h2>${esc(label)}</h2><p>${esc(txt)}</p>` : "");
-    return `
-      <a class="back" href="#/projects">${esc(L.back)}</a>
-      <h1>${esc(p.title)}</h1>
-      <p class="tl-date">${esc(p.date)}</p>
-      <p>${(p.tags || []).map((t) => `<span class="tag">${esc(t)}</span>`).join("")}</p>
-      ${block(L.context, p.context)}${block(L.role, p.role)}${block(L.methods, p.methods)}
-      ${block(L.results, p.results)}${block(L.lessons, p.lessons)}
-      <div class="gallery">${imgs(photosOf(p.id, p.images), "g-img")}</div>
-      ${p.link ? `<p><a class="btn" href="${esc(p.link)}" target="_blank" rel="noopener">${esc(L.link)}</a></p>` : ""}`;
-  }
+  const wrap = (k, inner, cls) =>
+    `<section class="sec ${cls || ""}" id="sec-${k}" data-k="${k}"><div class="wrap">${inner}</div></section>`;
 
   function renderCard(i, L) {
-    const photoList = photosOf(i.id);
+    const list = photosOf(i.id);
     return `
-      <div class="card">
-        ${photoList.length > 0 ? `<div class="thumbs">${imgs(photoList, "t-img")}</div>` : ""}
+      <article class="card reveal">
+        ${list.length ? `<div class="thumbs${list.length === 1 ? " single" : ""}">${imgs(list, "t-img")}</div>` : ""}
         <div class="card-text">
           ${i.date ? `<div class="tl-date">${esc(i.date)}</div>` : ""}
           <h3>${esc(i.title)}</h3>
           <p>${esc(i.text)}</p>
           ${i.href ? `<a class="more" href="${esc(i.href)}">${esc(L.seeProject)}</a>` : ""}
         </div>
-      </div>`;
+      </article>`;
   }
 
-  function pageSection(key) {
-    const s = T()[key];
-    const L = T().labels;
-    let contentHtml = "";
-
-    if (s.sections) {
-      contentHtml = s.sections.map((sec) => `
-        <h2>${esc(sec.title)}</h2>
-        <div class="cards ${key === "hobbies" ? "feature" : ""}">
-          ${sec.items.map((i) => renderCard(i, L)).join("")}
+  /* ---------- Sections ---------- */
+  function secHome() {
+    const h = T().home;
+    return wrap("home", `
+      <div class="hero">
+        <div class="hero-photo reveal"><img src="${esc(C.photo)}" alt="${esc(C.name)}" onerror="this.parentNode.classList.add('noimg')"></div>
+        <div class="hero-text reveal">
+          <p class="eyebrow">${esc(C.school)} · ${esc(C.year)}</p>
+          <h1>${esc(h.title)}</h1>
+          <p class="lead">${esc(h.subtitle)}</p>
+          <p>${esc(h.intro)}</p>
+          <div class="cta">
+            <a class="btn primary" href="#projects">${esc(T().nav.projects)} →</a>
+            <a class="btn" href="#contact">${esc(T().nav.contact)}</a>
+          </div>
         </div>
-      `).join("");
-    } else {
-      contentHtml = `<div class="cards ${key === "hobbies" ? "feature" : ""}">
-        ${s.items.map((i) => renderCard(i, L)).join("")}
-      </div>`;
-    }
-
-    return `
-      <h1>${esc(s.title)}</h1>
-      <p class="lead">${esc(s.intro)}</p>
-      ${contentHtml}`;
+      </div>
+      <div class="block reveal">
+        <h3 class="mini">${esc(h.skillsTitle)}</h3>
+        <p>${h.skills.map((s) => `<span class="tag">${esc(s)}</span>`).join("")}</p>
+      </div>
+      ${h.languages ? `<div class="block reveal"><h3 class="mini">${esc(h.languagesTitle)}</h3>
+      <div class="langs">${h.languages.map((l) => `
+        <div class="lang-chip">
+          ${C.showFlags !== false && l.flag ? `<span class="flag" aria-hidden="true">${l.flag}</span>` : ""}
+          <div><strong>${esc(l.name)}</strong><span>${esc(l.level)}${l.detail ? " · " + esc(l.detail) : ""}</span></div>
+        </div>`).join("")}</div></div>` : ""}
+      <div class="block">
+        <h3 class="mini reveal">${esc(h.interestsTitle)}</h3>
+        <div class="interests">
+          ${h.interests.map((i) => {
+            const src = (C.interestImages || {})[i.id];
+            return `
+            <a class="interest reveal" href="${esc(i.href || "#home")}">
+              <div class="int-media${src ? "" : " noimg"}" data-icon="${esc(i.icon || "")}">
+                ${src ? `<img src="${esc(src)}" alt="${esc(i.title)}" loading="lazy" onerror="this.parentNode.classList.add('noimg');this.remove()">` : ""}
+              </div>
+              <div class="int-body"><h3>${esc(i.title)}</h3><p>${esc(i.text)}</p>${h.more ? `<span class="more">${esc(h.more)}</span>` : ""}</div>
+            </a>`;
+          }).join("")}
+        </div>
+      </div>`, "sec-home");
   }
 
-  function pageCareer() {
+  function secGeneric(k) {
+    const s = T()[k];
+    const L = T().labels;
+    const feature = k === "hobbies" ? " feature" : "";
+    const grid = (items) => `<div class="cards${feature}">${items.map((i) => renderCard(i, L)).join("")}</div>`;
+    const body = s.sections
+      ? s.sections.map((sec) => `<h3 class="sub reveal">${esc(sec.title)}</h3>${grid(sec.items)}`).join("")
+      : grid(s.items);
+    return wrap(k, head(k, s.title, s.intro) + body);
+  }
+
+  function secProjects() {
+    const list = [...T().projects].sort((a, b) => String(b.sort || b.date).localeCompare(String(a.sort || a.date)));
+    return wrap("projects", head("projects", T().projectsTitle) + `
+      <div class="timeline">
+        ${list.map((p) => `
+          <div class="tl-item reveal">
+            <div class="tl-date">${esc(p.date)}</div>
+            <a class="card" href="#/projects/${esc(p.id)}">
+              <div class="cover">${imgs(photosOf(p.id, p.images).slice(0, 1), "cover-img").replace(" data-zoom", "")}</div>
+              <div class="card-text">
+                <h3>${esc(p.title)}</h3>
+                <p>${esc(p.summary)}</p>
+                ${(p.tags || []).map((t) => `<span class="tag">${esc(t)}</span>`).join("")}
+              </div>
+            </a>
+          </div>`).join("")}
+      </div>`);
+  }
+
+  function secCareer() {
     const c = T().career;
-    return `
-      <h1>${esc(c.title)}</h1>
-      <p class="lead">${esc(c.intro)}</p>
-      ${c.sections.map((sec) => `
-        <h2>${esc(sec.title)}</h2>
-        <div class="cards career-grid">
-          ${sec.items.map((i) => `
-            <div class="card career-card">
+    return wrap("career", head("career", c.title, c.intro) + c.sections.map((sec) => `
+      <h3 class="sub reveal">${esc(sec.title)}</h3>
+      <div class="cards career-grid">
+        ${sec.items.map((i) => {
+          const list = photosOf(i.id);
+          return `
+          <article class="card career-card reveal">
+            ${list.length ? `<div class="thumbs${list.length === 1 ? " single" : ""}">${imgs(list, "t-img")}</div>` : ""}
+            <div class="card-text">
               <div class="career-header">
-                ${i.logo ? `<img class="company-logo" src="${esc(i.logo)}" alt="" onerror="this.style.display='none'">` : `<div class="company-logo-placeholder">🏢</div>`}
+                ${i.logo ? `<img class="company-logo" src="${esc(i.logo)}" alt="" onerror="this.style.display='none'">` : ""}
                 <div>
                   <h3>${esc(i.title)}</h3>
-                  ${i.company ? `<div class="company-name"><strong>${esc(i.company)}</strong></div>` : ""}
+                  ${i.company ? `<div class="company-name">${esc(i.company)}</div>` : ""}
                   ${i.date ? `<div class="tl-date">${esc(i.date)}</div>` : ""}
                 </div>
               </div>
               <p>${esc(i.text)}</p>
             </div>
-          `).join("")}
-        </div>
-      `).join("")}`;
+          </article>`;
+        }).join("")}
+      </div>`).join(""));
   }
 
-  function pageContact() {
+  function secContact() {
     const t = T().contact;
-    const li = `<p class="contact-alt"><a class="btn" href="${esc(C.linkedin)}" target="_blank" rel="noopener">${esc(t.linkedin)}</a></p>`;
-    return `
-      <h1>${esc(t.title)}</h1>
-      <p class="lead">${esc(t.intro)}</p>
-      ${li}`;
+    return wrap("contact", head("contact", t.title, t.intro) +
+      `<p class="cta reveal"><a class="btn primary" href="${esc(C.linkedin)}" target="_blank" rel="noopener">${esc(t.linkedin)}</a>
+       <a class="btn" href="${esc(C.cv[lang])}" target="_blank" rel="noopener">${esc(T().cvLabel)}</a></p>`);
   }
 
-  function route() {
+  function pageAll() {
+    return secHome() + secGeneric("education") + secProjects() + secGeneric("mobility") +
+      secGeneric("civic") + secGeneric("hobbies") + secCareer() + secContact();
+  }
+
+  /* ---------- Fiche projet (vue détaillée) ---------- */
+  function pageProject(id) {
+    const p = T().projects.find((x) => x.id === id);
+    const L = T().labels;
+    if (!p) return wrap("projects", `<p>${esc(L.notFound)}</p>`, "detail");
+    const block = (label, txt) => (txt ? `<h3 class="sub">${esc(label)}</h3><p>${esc(txt)}</p>` : "");
+    return wrap("projects", `
+      <a class="back" href="#projects">${esc(L.back)}</a>
+      <h1 class="detail-title">${esc(p.title)}</h1>
+      <p class="tl-date">${esc(p.date)}</p>
+      <p>${(p.tags || []).map((t) => `<span class="tag">${esc(t)}</span>`).join("")}</p>
+      ${block(L.context, p.context)}${block(L.role, p.role)}${block(L.methods, p.methods)}
+      ${block(L.results, p.results)}${block(L.lessons, p.lessons)}
+      <div class="gallery">${imgs(photosOf(p.id, p.images), "g-img")}</div>
+      ${p.link ? `<p><a class="btn primary" href="${esc(p.link)}" target="_blank" rel="noopener">${esc(L.link)}</a></p>` : ""}`, "detail");
+  }
+
+  /* ---------- Animations d'apparition et onglet actif ---------- */
+  let revealIO, spyIO;
+  function observe() {
+    if (revealIO) revealIO.disconnect();
+    if (spyIO) spyIO.disconnect();
+    const items = document.querySelectorAll(".reveal");
+    if (!("IntersectionObserver" in window) || matchMedia("(prefers-reduced-motion: reduce)").matches) {
+      items.forEach((el) => el.classList.add("in"));
+    } else {
+      revealIO = new IntersectionObserver((es) => es.forEach((e) => {
+        if (e.isIntersecting) { e.target.classList.add("in"); revealIO.unobserve(e.target); }
+      }), { rootMargin: "0px 0px -8% 0px", threshold: 0.05 });
+      items.forEach((el) => revealIO.observe(el));
+    }
+    if (view === "main" && "IntersectionObserver" in window) {
+      spyIO = new IntersectionObserver((es) => es.forEach((e) => {
+        if (e.isIntersecting) setActive(e.target.dataset.k);
+      }), { rootMargin: "-45% 0px -50% 0px" });
+      document.querySelectorAll(".sec").forEach((s) => spyIO.observe(s));
+    }
+  }
+  function setActive(k) {
+    document.querySelectorAll("#nav a[data-k]").forEach((a) => a.classList.toggle("active", a.dataset.k === k));
+  }
+
+  /* ---------- Routage ---------- */
+  let view = null; // "main" | "detail"
+  const ALIAS = { "#sports": "hobbies", "#/projects": "projects" };
+
+  function scrollToKey(k, smooth) {
+    if (k === "home") { window.scrollTo({ top: 0, behavior: smooth ? "smooth" : "auto" }); return; }
+    const el = document.getElementById("sec-" + k);
+    if (el) el.scrollIntoView({ behavior: smooth ? "smooth" : "auto", block: "start" });
+  }
+
+  function route(opts) {
+    opts = opts || {};
     const h = location.hash || "#home";
-    let key = "home", html;
-    if (h.startsWith("#/projects/")) { key = "projects"; html = pageProject(decodeURIComponent(h.slice(11))); }
-    else if (h === "#/projects" || h === "#projects") { key = "projects"; html = pageProjects(); }
-    else if (h === "#education") { key = "education"; html = pageSection("education"); }
-    else if (h === "#mobility") { key = "mobility"; html = pageSection("mobility"); }
-    else if (h === "#civic") { key = "civic"; html = pageSection("civic"); }
-    else if (h === "#hobbies" || h === "#sports") { key = "hobbies"; html = pageSection("hobbies"); }
-    else if (h === "#career") { key = "career"; html = pageCareer(); }
-    else if (h === "#contact") { key = "contact"; html = pageContact(); }
-    else { html = pageHome(); }
-    $("#app").innerHTML = html;
-    document.querySelectorAll("#nav a").forEach((a) => a.classList.toggle("active", a.dataset.k === key));
+    if (h.startsWith("#/projects/")) {
+      view = "detail";
+      $("#app").innerHTML = pageProject(decodeURIComponent(h.slice(11)));
+      setActive("projects");
+      observe();
+      window.scrollTo(0, 0);
+    } else {
+      const key = ALIAS[h] || (SECTIONS.includes(h.slice(1)) ? h.slice(1) : "home");
+      const fresh = view !== "main";
+      if (fresh || opts.rerender) {
+        const y = window.scrollY;
+        view = "main";
+        $("#app").innerHTML = pageAll();
+        observe();
+        if (opts.keepScroll) window.scrollTo(0, y);
+        else scrollToKey(key, false);
+      } else {
+        scrollToKey(key, true);
+      }
+      setActive(key);
+    }
     $("#nav").classList.remove("open");
-    window.scrollTo(0, 0);
   }
 
+  /* ---------- Événements ---------- */
   $("#burger").addEventListener("click", () => $("#nav").classList.toggle("open"));
+  $("#nav").addEventListener("click", (e) => {
+    const a = e.target.closest("a[data-k]");
+    if (!a) return;
+    $("#nav").classList.remove("open");
+    // Si on clique sur l'onglet déjà dans l'URL, le hash ne change pas : on défile à la main.
+    if (location.hash === "#" + a.dataset.k && view === "main") { e.preventDefault(); scrollToKey(a.dataset.k, true); }
+  });
   $("#themeBtn").addEventListener("click", () => {
     theme = theme === "dark" ? "light" : "dark";
-    localStorage.setItem("theme", theme);
+    store.set("theme", theme);
     renderChrome();
   });
-  const setLang = (l) => { lang = l; localStorage.setItem("lang", l); renderChrome(); route(); };
+  const setLang = (l) => {
+    lang = l; store.set("lang", l);
+    renderChrome();
+    route({ rerender: true, keepScroll: true });
+  };
   $("#langFr").addEventListener("click", () => setLang("fr"));
   $("#langEn").addEventListener("click", () => setLang("en"));
-  window.addEventListener("hashchange", route);
+  window.addEventListener("hashchange", () => route());
 
+  // Ombre de la barre au défilement
+  const onScroll = () => $(".topbar").classList.toggle("scrolled", window.scrollY > 8);
+  window.addEventListener("scroll", onScroll, { passive: true });
+
+  // Agrandissement des photos
   document.addEventListener("click", (e) => {
     const img = e.target.closest && e.target.closest("img[data-zoom]");
     if (!img) return;
@@ -211,4 +302,5 @@
 
   renderChrome();
   route();
+  onScroll();
 })();

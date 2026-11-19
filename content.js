@@ -28,7 +28,19 @@ window.CONTENT = {
     // --- Activités ---
     "hob-sport":                 ["assets/loisirs/velo-1.jpg"],
     "hob-music":                 ["assets/loisirs/musique-1.jpg"],
-    "hob-travel":                ["assets/loisirs/voyage-autonomie.jpg"]
+    "hob-travel":                ["assets/loisirs/voyage-autonomie.jpg"],
+    // --- Ingénierie ---
+    "edu-fluides":               ["assets/ingenierie/fluides.jpg"],
+    "edu-cfd":                   ["assets/ingenierie/cfd.jpg"],
+    "edu-elec":                  ["assets/ingenierie/electronique.jpg"],
+    "edu-enseeiht":              ["assets/ingenierie/enseeiht.jpg"],
+    "edu-prepa":                 ["assets/ingenierie/prepa.jpg"],
+    // --- Carrière ---
+    "car-cirtem":                ["assets/carriere/cirtem.jpg"],
+    "car-cerfacs":               ["assets/carriere/cerfacs.jpg"],
+    "car-buron":                 ["assets/carriere/buron.jpg"],
+    "car-unam":                  ["assets/carriere/unam.jpg"],
+    "car-ing":                   ["assets/carriere/ingenieur.jpg"]
   },
 
   interestImages: {
@@ -73,17 +85,17 @@ window.CONTENT = {
         {
           title: "Domaines d'expertise & Ingénierie",
           items: [
-            { title: "Mécanique des Fluides & Énergétique", text: "Dynamique des fluides compressibles/incompressibles, écoulements turbulents, transferts thermiques et thermodynamique appliquée." },
-            { title: "Modélisation numérique & Calcul (CFD)", text: "Résolution d'EDP, méthodes des différences finies, modélisation sous ANSYS Fluent, scripts Python & simulations MATLAB." },
-            { title: "Systèmes Énergétiques & Électronique", text: "Bases solides en génie électrique, électronique de puissance, traitement du signal et conversion d'énergie." }
+            { id: "edu-fluides", title: "Mécanique des Fluides & Énergétique", text: "Dynamique des fluides compressibles/incompressibles, écoulements turbulents, transferts thermiques et thermodynamique appliquée." },
+            { id: "edu-cfd", title: "Modélisation numérique & Calcul (CFD)", text: "Résolution d'EDP, méthodes des différences finies, modélisation sous ANSYS Fluent, scripts Python & simulations MATLAB." },
+            { id: "edu-elec", title: "Systèmes Énergétiques & Électronique", text: "Bases solides en génie électrique, électronique de puissance, traitement du signal et conversion d'énergie." }
           ]
         },
         {
           title: "Parcours académique",
           items: [
-            { title: "Diplôme d'ingénieur — MF2E · ENSEEIHT (Toulouse INP)", date: "09/2025 – présent",
+            { id: "edu-enseeiht", title: "Diplôme d'ingénieur — MF2E · ENSEEIHT (Toulouse INP)", date: "09/2025 – présent",
               text: "2e année : Mécanique des Fluides, Énergétique et Environnement (orientation énergies renouvelables). 1re année : Électronique, Génie Électrique et Automatique." },
-            { title: "Cycle préparatoire d'ingénieur · Prépa t², Toulouse INP", date: "09/2023 – 06/2025",
+            { id: "edu-prepa", title: "Cycle préparatoire d'ingénieur · Prépa t², Toulouse INP", date: "09/2023 – 06/2025",
               text: "Formation scientifique polyvalente avec projet d'étude appliqué aux centrales marémotrices et à la transition énergétique." }
           ]
         }
@@ -174,13 +186,13 @@ window.CONTENT = {
         {
           title: "Expériences professionnelles",
           items: [
-            { logo: "assets/entreprises/cirtem.png", title: "Stagiaire de production — CIRTEM", date: "06/2026 – 07/2026",
+            { id: "car-cirtem", logo: "assets/entreprises/cirtem.png", title: "Stagiaire de production — CIRTEM", date: "06/2026 – 07/2026",
               company: "CIRTEM (Sainte-Foy-d'Aigrefeuille)",
               text: "Électronique de puissance. Montage et câblage de modules électriques, gestion de stock, relecture de fiches de montage et tests de cartes électroniques." },
-            { logo: "assets/entreprises/cerfacs.png", title: "Stagiaire en médiation scientifique — CERFACS", date: "04/2025 – 06/2025",
+            { id: "car-cerfacs", logo: "assets/entreprises/cerfacs.png", title: "Stagiaire en médiation scientifique — CERFACS", date: "04/2025 – 06/2025",
               company: "CERFACS — Équipe Climat & Environnement GLOBC (Toulouse)",
               text: "Création de supports de vulgarisation scientifique et développement d'un notebook pédagogique Python sur l'attracteur de Lorenz." },
-            { logo: "assets/entreprises/buron.png", title: "Employé de restauration — Buron de l'Aubrac", date: "07/2023",
+            { id: "car-buron", logo: "assets/entreprises/buron.png", title: "Employé de restauration — Buron de l'Aubrac", date: "07/2023",
               company: "Buron de l'Aubrac",
               text: "Expérience saisonnière exigeante développant le travail en équipe et la gestion du stress." }
           ]
@@ -188,10 +200,10 @@ window.CONTENT = {
         {
           title: "Projet de carrière & Ambitions",
           items: [
-            { logo: "assets/entreprises/unam.png", title: "Stage de recherche — Énergies renouvelables", date: "Été 2027",
+            { id: "car-unam", logo: "assets/entreprises/unam.png", title: "Stage de recherche — Énergies renouvelables", date: "Été 2027",
               company: "Laboratoire UNAM / Recherche appliquée",
               text: "Application de la mécanique des fluides et de la CFD aux systèmes de captage d'énergies renouvelables au Mexique." },
-            { logo: "assets/entreprises/ing.png", title: "Ingénieur R&D / Chef de projet Énergie", date: "Horizon 2028+",
+            { id: "car-ing", logo: "assets/entreprises/ing.png", title: "Ingénieur R&D / Chef de projet Énergie", date: "Horizon 2028+",
               company: "Secteur de l'Énergie & de l'Environnement",
               text: "Concevoir des solutions fluides/thermiques efficientes pour décarboner la production d'énergie et optimiser les ressources technologiques." }
           ]
@@ -248,17 +260,17 @@ window.CONTENT = {
         {
           title: "Engineering Expertise",
           items: [
-            { title: "Fluid Mechanics & Energy", text: "Compressible/incompressible dynamics, turbulence, heat transfer, and applied thermodynamics." },
-            { title: "Numerical Modeling (CFD)", text: "PDE solving, finite differences, ANSYS Fluent modeling, Python & MATLAB simulations." },
-            { title: "Energy Systems & Electronics", text: "Electrical engineering foundations, power electronics, and signal processing." }
+            { id: "edu-fluides", title: "Fluid Mechanics & Energy", text: "Compressible/incompressible dynamics, turbulence, heat transfer, and applied thermodynamics." },
+            { id: "edu-cfd", title: "Numerical Modeling (CFD)", text: "PDE solving, finite differences, ANSYS Fluent modeling, Python & MATLAB simulations." },
+            { id: "edu-elec", title: "Energy Systems & Electronics", text: "Electrical engineering foundations, power electronics, and signal processing." }
           ]
         },
         {
           title: "Academic Background",
           items: [
-            { title: "Engineering Degree — MF2E · ENSEEIHT (Toulouse INP)", date: "09/2025 – present",
+            { id: "edu-enseeiht", title: "Engineering Degree — MF2E · ENSEEIHT (Toulouse INP)", date: "09/2025 – present",
               text: "Year 2: Fluid Mechanics, Energy & Environment (Renewable Energy focus). Year 1: Electronics, Electrical Engineering & Automation." },
-            { title: "Engineering Preparatory Cycle · Prépa t², Toulouse INP", date: "09/2023 – 06/2025",
+            { id: "edu-prepa", title: "Engineering Preparatory Cycle · Prépa t², Toulouse INP", date: "09/2023 – 06/2025",
               text: "Multidisciplinary scientific training including a study project on tidal power plants." }
           ]
         }
@@ -338,20 +350,20 @@ window.CONTENT = {
         {
           title: "Work Experience",
           items: [
-            { logo: "assets/entreprises/cirtem.png", title: "Production Intern — CIRTEM", date: "06/2026 – 07/2026",
+            { id: "car-cirtem", logo: "assets/entreprises/cirtem.png", title: "Production Intern — CIRTEM", date: "06/2026 – 07/2026",
               company: "CIRTEM", text: "Power electronics manufacturing, module assembly, stock handling, and test procedures." },
-            { logo: "assets/entreprises/cerfacs.png", title: "Science Communication Intern — CERFACS", date: "04/2025 – 06/2025",
+            { id: "car-cerfacs", logo: "assets/entreprises/cerfacs.png", title: "Science Communication Intern — CERFACS", date: "04/2025 – 06/2025",
               company: "CERFACS (GLOBC Team)", text: "Scientific outreach and creation of a Python notebook on the Lorenz attractor." },
-            { logo: "assets/entreprises/buron.png", title: "Kitchen Staff — Buron de l'Aubrac", date: "07/2023",
+            { id: "car-buron", logo: "assets/entreprises/buron.png", title: "Kitchen Staff — Buron de l'Aubrac", date: "07/2023",
               company: "Buron de l'Aubrac", text: "Seasonal restaurant job developing teamwork under pressure." }
           ]
         },
         {
           title: "Career Vision & Ambitions",
           items: [
-            { logo: "assets/entreprises/unam.png", title: "Research Internship — Renewable Energy", date: "Summer 2027",
+            { id: "car-unam", logo: "assets/entreprises/unam.png", title: "Research Internship — Renewable Energy", date: "Summer 2027",
               company: "UNAM Lab", text: "Applying CFD and fluid mechanics to renewable energy devices." },
-            { logo: "assets/entreprises/ing.png", title: "R&D / Energy Project Engineer", date: "2028+",
+            { id: "car-ing", logo: "assets/entreprises/ing.png", title: "R&D / Energy Project Engineer", date: "2028+",
               company: "Energy & Environment Sector", text: "Developing efficient fluid/thermal solutions to decarbonise energy systems." }
           ]
         }
