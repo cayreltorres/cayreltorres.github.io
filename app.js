@@ -13,6 +13,17 @@
   const T = () => C[lang];
   const esc = (s) => String(s ?? "").replace(/[&<>"]/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]));
 
+
+  // Drapeaux rectangulaires (SVG) : rendu identique sur tous les systèmes, contrairement aux emoji
+  const FLAGS = {
+    "🇫🇷": '<rect width="10" height="20" fill="#0055A4"/><rect x="10" width="10" height="20" fill="#fff"/><rect x="20" width="10" height="20" fill="#EF4135"/>',
+    "🇪🇸": '<rect width="30" height="20" fill="#AA151B"/><rect y="5" width="30" height="10" fill="#F1BF00"/>',
+    "🇮🇹": '<rect width="10" height="20" fill="#009246"/><rect x="10" width="10" height="20" fill="#fff"/><rect x="20" width="10" height="20" fill="#CE2B37"/>',
+    "🇬🇧": '<rect width="30" height="20" fill="#012169"/><path d="M0 0L30 20M30 0L0 20" stroke="#fff" stroke-width="4"/><path d="M0 0L30 20M30 0L0 20" stroke="#C8102E" stroke-width="1.4"/><path d="M15 0V20M0 10H30" stroke="#fff" stroke-width="6"/><path d="M15 0V20M0 10H30" stroke="#C8102E" stroke-width="3.4"/>'
+  };
+  const flagSvg = (emoji) => FLAGS[emoji]
+    ? `<svg viewBox="0 0 30 20" width="30" height="20" preserveAspectRatio="none" focusable="false">${FLAGS[emoji]}</svg>` : "";
+
   // Photos d'un bloc : C.photos[id] si déclaré, sinon assets/photos/<id>.jpg (convention),
   // sinon rien. Une image introuvable disparaît toute seule (pas de trou dans la page).
   const photosOf = (id, fallback) => {
@@ -90,11 +101,12 @@
         <p>${h.skills.map((s) => `<span class="tag">${esc(s)}</span>`).join("")}</p>
       </div>
       ${h.languages ? `<div class="block reveal"><h3 class="mini">${esc(h.languagesTitle)}</h3>
-      <div class="langs">${h.languages.map((l) => `
-        <div class="lang-chip">
-          ${C.showFlags !== false && l.flag ? `<span class="flag" aria-hidden="true">${l.flag}</span>` : ""}
-          <div><strong>${esc(l.name)}</strong><span>${esc(l.level)}${l.detail ? " · " + esc(l.detail) : ""}</span></div>
-        </div>`).join("")}</div></div>` : ""}
+      <ul class="langs">${h.languages.map((l) => `
+        <li class="lang-row">
+          ${C.showFlags !== false && flagSvg(l.flag) ? `<span class="flag" aria-hidden="true">${flagSvg(l.flag)}</span>` : ""}
+          <strong>${esc(l.name)}</strong>
+          <span class="lang-level">${esc(l.level)}${l.detail ? " · " + esc(l.detail) : ""}</span>
+        </li>`).join("")}</ul></div>` : ""}
       <div class="block">
         <h3 class="mini reveal">${esc(h.interestsTitle)}</h3>
         <div class="interests">
