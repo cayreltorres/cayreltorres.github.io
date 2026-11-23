@@ -212,13 +212,13 @@ window.CONTENT = {
     },
     contact: {
       title: "Me contacter",
-      intro: "Une question, une opportunité de stage ou une idée de collaboration ? Écris-moi !",
-      name: "Ton nom", email: "Ton e-mail", message: "Ton message",
+      intro: "Une question, une opportunité de stage ou une idée de collaboration ? N'hésitez pas à m'écrire.",
+      name: "Votre nom", email: "Votre e-mail", message: "Votre message",
       send: "Envoyer le message", sending: "Envoi en cours…",
       success: "Message envoyé, merci !", error: "L'envoi a échoué.",
       captcha: "Merci de cocher la vérification anti-robot.",
       tooFast: "Merci de patienter avant d'envoyer.", unavailable: "Formulaire non disponible.",
-      note: "Message sécurisé via Web3Forms.", linkedin: "Écris-moi sur LinkedIn", cta: "Me contacter →"
+      note: "Message sécurisé via Web3Forms.", linkedin: "M'écrire sur LinkedIn", cta: "Me contacter →"
     },
     labels: { back: "← Retour aux projets", context: "Contexte", role: "Mon rôle", methods: "Méthodes & outils",
               results: "Résultats", lessons: "Enseignements", link: "Voir le projet", seeProject: "Voir la fiche →", notFound: "Page introuvable." },
