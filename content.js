@@ -60,14 +60,14 @@ window.CONTENT = {
       subtitle: "Élève-ingénieur à l'ENSEEIHT (Toulouse INP) — Mécanique des Fluides, Énergétique et Environnement",
       intro: "Je me spécialise en mécanique des fluides, énergie et environnement. J'ai une formation en dynamique des fluides, transferts thermiques et calcul numérique (CFD, Python, MATLAB), ainsi qu'une base en génie électrique et électronique. Je recherche un stage de recherche de Master 1 du 7 juin au 10 septembre 2027 dans un laboratoire de l'UNAM (Mexique), afin d'appliquer et d'approfondir mes compétences dans le domaine des énergies renouvelables.",
       skillsTitle: "Compétences clés",
-      skills: ["ANSYS Fluent", "CFD", "Python", "MATLAB", "EDP", "Différences finies",
-               "Turbulence", "Transferts thermiques", "Électronique de puissance", "Traitement du signal"],
+      skills: ["ANSYS Fluent", "CFD", "Python", "MATLAB", "C", "Méthodes numériques",
+               "Turbulence", "Transferts thermiques", "Électronique RF", "Traitement du signal"],
       interestsTitle: "Centres d'intérêt",
       more: "En savoir plus →",
       interests: [
-        { id: "sport", href: "#hobbies", icon: "🚵", title: "Sport & Dépassement", text: "Entraîneur de VTT certifié, cycliste et coureur à pied." },
-        { id: "music", href: "#hobbies", icon: "🎻", title: "Musique & Expression", text: "Violon, contrebasse, guitare et piano. Passion pour le jazz." },
-        { id: "travel", href: "#hobbies", icon: "🧭", title: "Exploration & Voyagisme alternatif", text: "Voyages en autonomie et hors des sentiers battus à travers l'Europe et le long du Danube." },
+        { id: "sport", href: "#hobbies", icon: "🚵", title: "Sport", text: "Cyclisme et course à pied." },
+        { id: "music", href: "#hobbies", icon: "🎻", title: "Musique", text: "Multi-instrumentiste. Passion pour le jazz." },
+        { id: "travel", href: "#hobbies", icon: "🧭", title: "Exploration & Voyagisme alternatif", text: "Voyages en autonomie et hors des sentiers battus à travers l'Europe." },
         { id: "world", href: "#civic", icon: "🌍", title: "Regard sur le monde", text: "Lecture quotidienne de l'actualité avec un intérêt pour la géopolitique et l'écologie." }
       ],
       languagesTitle: "Langues",
@@ -86,17 +86,17 @@ window.CONTENT = {
           title: "Domaines d'expertise & Ingénierie",
           items: [
             { id: "edu-fluides", title: "Mécanique des Fluides & Énergétique", text: "Dynamique des fluides compressibles/incompressibles, écoulements turbulents, transferts thermiques et thermodynamique appliquée." },
-            { id: "edu-cfd", title: "Modélisation numérique & Calcul (CFD)", text: "Résolution d'EDP, méthodes des différences finies, modélisation sous ANSYS Fluent, scripts Python & simulations MATLAB." },
-            { id: "edu-elec", title: "Systèmes Énergétiques & Électronique", text: "Bases solides en génie électrique, électronique de puissance, traitement du signal et conversion d'énergie." }
+            { id: "edu-cfd", title: "Modélisation numérique & Calcul (CFD)", text: "Résolution d'EDP, méthodes numériiques, modélisation sous ANSYS Fluent, scripts Python, MATLAB & C." },
+            { id: "edu-elec", title: "Systèmes Énergétiques & Électronique", text: "Bases solides en génie électrique, électronique RF, semi-conducteurs, traitement du signal et conversion d'énergie." }
           ]
         },
         {
           title: "Parcours académique",
           items: [
             { id: "edu-enseeiht", title: "Diplôme d'ingénieur — MF2E · ENSEEIHT (Toulouse INP)", date: "09/2025 – présent",
-              text: "2e année : Mécanique des Fluides, Énergétique et Environnement (orientation énergies renouvelables). 1re année : Électronique, Génie Électrique et Automatique." },
+              text: "2e année : Mécanique des Fluides, Énergétique et Environnement (orientation énergies renouvelables, sciences de l'environnement & biotechnologies). 1re année : Électronique, Génie Électrique et Automatique." },
             { id: "edu-prepa", title: "Cycle préparatoire d'ingénieur · Prépa t², Toulouse INP", date: "09/2023 – 06/2025",
-              text: "Formation scientifique polyvalente avec projet d'étude appliqué aux centrales marémotrices et à la transition énergétique." }
+              text: "Formation scientifique polyvalente avec projet d'étude appliqué aux centrales marémotrices et à la transition énergétique et du métier d'ingénieur." }
           ]
         }
       ]
@@ -138,19 +138,19 @@ window.CONTENT = {
         {
           title: "Expériences réalisées",
           items: [
-            { id: "mob-danube", href: "#/projects/expedition-danube", title: "Expédition Danube — Traversée de l'Europe centrale", date: "07/2025",
-              text: "Traversée de l'Allemagne, Autriche, Slovénie et Hongrie à vélo en solitaire (1 mois), avec bourse d'étude de terrain Zellidja." },
-            { id: "mob-europe", title: "Voyage en autonomie à travers l'Europe", date: "Été 2024",
-              text: "Voyage en totale autonomie à travers plusieurs pays européens, axé sur le voyage alternatif et l'immersion." }
+            { id: "mob-danube", href: "#/projects/expedition-danube", title: "Le Danube à vélo — Étude de l'utilisation des ressources naturelles le long du fleuve", date: "07/2025",
+              text: "Traversée de l'Europe centrale à vélo en solitaire (1 mois), avec un sujet d'Étude, financé par l'association Zellidja." },
+            { id: "mob-europe", title: "Voyage en autonomie à travers l'Europe — Programme DiscoverEU", date: "Été 2024",
+              text: "Voyage à travers plusieurs pays européens avec le programme de l'Union Européenne DiscoverEU, rencontres entre jeunes européens & déplacements en train." }
           ]
         },
         {
           title: "Projets & Ambitions futures",
           items: [
             { id: "mob-unam", title: "Stage de recherche M1 — UNAM (Mexique)", date: "06/2027 – 09/2027 (Projet)",
-              text: "Objectif : intégrer un laboratoire de recherche à l'UNAM à Mexico pour travailler sur la dynamique des fluides appliquée aux énergies renouvelables." },
+              text: "Objectif : intégrer un laboratoire de recherche à l'UNAM à Mexico pour travailler sur la dynamique des fluides appliquée aux énergies renouvelables, à l'environnement, ou aux biotechnologies." },
             { id: "mob-future", title: "Perspectives internationales & Master 2", date: "2027 – 2028",
-              text: "Volonté d'effectuer le projet de fin d'études ou un semestre académique à l'étranger dans le secteur des technologies énergétiques durables." }
+              text: "Volonté d'effectuer le projet de fin d'études, ou de me tourner vers un contrat de début de carrière à l'étranger dans le secteur des technologies énergétiques durables." }
           ]
         }
       ]
@@ -162,9 +162,9 @@ window.CONTENT = {
         { id: "civ-monde", title: "Conscience globale & Veille sociétale", date: "au quotidien",
           text: "Suivi quotidien de l'actualité internationale, géopolitique et des enjeux climatiques globaux." },
         { id: "civ-energies", href: "#/projects/centrales-maremotrices", title: "Transition énergétique & Énergies propres", date: "En continu",
-          text: "Orientation d'ingénierie ciblée sur l'impact écologique : projets d'études marémoteurs et stage UNAM." },
-        { id: "civ-danube", href: "#/projects/expedition-danube", title: "Preservation des ressources en eau", date: "07/2025",
-          text: "Étude de terrain dédiée à la gestion du Danube et à la sensibilisation aux écosystèmes fluviaux." }
+          text: "Orientation d'ingénierie ciblée sur l'impact écologique : projets d'études marémoteurs et stageà l'UNAM." },
+        { id: "civ-danube", href: "#/projects/expedition-danube", title: "Atelier réparation associatif", date: "07/2025",
+          text: "Membre de l'association Frouzins Iniciatives citoyennes avec laquelle j'ai appris à réparer des vélos. Chacun est libre de venir avec son vélo ou son objet défectueux pour apprendre à le réparer gratuitement pour donner une seconde vie à son bien. " }
       ]
     },
     hobbies: {
@@ -172,11 +172,11 @@ window.CONTENT = {
       intro: "Mes centres d'intérêt au-delà de l'ingénierie : sport, musique et exploration.",
       items: [
         { id: "hob-travel", href: "#/projects/expedition-danube", title: "Voyages en autonomie & Exploration", date: "Régulier",
-          text: "Voyager autrement, hors des sentiers battus et en autonomie totale (bikepacking, itinéraires engagés) pour privilégier l'immersion terrain et la sobriété." },
-        { id: "hob-sport", href: "#/projects/expedition-danube", title: "Sport : VTT, Vélo & Course à pied", date: "Pratique régulière",
-          text: "Entraîneur certifié de VTT. Cyclisme sur longue distance et course à pied pour le dépassement de soi." },
+          text: "Voyager autrement, hors des sentiers battus et en autonomie (bikepacking, itinéraires engagés) pour privilégier l'immersion culturelle et la sobriété." },
+        { id: "hob-sport", href: "#/projects/expedition-danube", title: "Sport : Cyclisme & Course à pied", date: "Pratique régulière",
+          text: "Éducateur VTT certifié de la Fédération Française de Cyclisme (FFC). Défis cyclistes longue distance, entraînement et compétitions de course à pied tout au long de l'année." },
         { id: "hob-music", title: "Pratique musicale & Jazz", date: "Passion",
-          text: "Pratique du violon, de la contrebasse, de la guitare et du piano, avec une prédilection pour l'improvisation jazz." }
+          text: "Pratique du violon, de la contrebasse, de la guitare et du piano, avec une passion pour le jazz et les musiques improvisées." }
       ]
     },
     career: {
@@ -188,10 +188,10 @@ window.CONTENT = {
           items: [
             { id: "car-cirtem", logo: "assets/entreprises/cirtem.png", title: "Stagiaire de production — CIRTEM", date: "06/2026 – 07/2026",
               company: "CIRTEM (Sainte-Foy-d'Aigrefeuille)",
-              text: "Électronique de puissance. Montage et câblage de modules électriques, gestion de stock, relecture de fiches de montage et tests de cartes électroniques." },
+              text: "Stage ouvrier de 8 semaines au sein de la chaîne de production d'une  entreprise spécialisée dans l’électronique de puissance. Montage et câblage de modules électriques, rangement en magasin, révision de fiches d’instruction de montage et test de cartes électroniques." },
             { id: "car-cerfacs", logo: "assets/entreprises/cerfacs.png", title: "Stagiaire en médiation scientifique — CERFACS", date: "04/2025 – 06/2025",
               company: "CERFACS — Équipe Climat & Environnement GLOBC (Toulouse)",
-              text: "Création de supports de vulgarisation scientifique et développement d'un notebook pédagogique Python sur l'attracteur de Lorenz." },
+              text: "Stage de médiation scientifique d'une durée de 6 semaines au Centre Européen de Recherche et de Formation Avancée en Calcul Scientifique (HPC). Création de supports de présentation destinés à un public scientiﬁique et développement d'un notebook pédagogique Python sur l'attracteur de Lorenz." },
             { id: "car-buron", logo: "assets/entreprises/buron.png", title: "Employé de restauration — Buron de l'Aubrac", date: "07/2023",
               company: "Buron de l'Aubrac",
               text: "Expérience saisonnière exigeante développant le travail en équipe et la gestion du stress." }
