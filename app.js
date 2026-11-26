@@ -65,15 +65,31 @@
   const wrap = (k, inner, cls) =>
     `<section class="sec ${cls || ""}" id="sec-${k}" data-k="${k}"><div class="wrap">${inner}</div></section>`;
 
+  // Boutons "documents" d'un bloc : [{ url, label }]
+  const linksHtml = (links, L) => (links && links.length)
+    ? `<p class="doc-links">${links.map((l) =>
+        `<a class="btn" href="${esc(l.url)}" target="_blank" rel="noopener">${esc(l.label || L.link)}</a>`).join(" ")}</p>`
+    : "";
+
   function renderCard(i, L) {
     const list = photosOf(i.id);
+    const hasLogoHeader = i.logo || i.company;
     return `
       <article class="card reveal">
         ${list.length ? `<div class="thumbs${list.length === 1 ? " single" : ""}">${imgs(list, "t-img")}</div>` : ""}
         <div class="card-text">
+          ${hasLogoHeader ? `<div class="career-header">
+            ${i.logo ? `<img class="company-logo" src="${esc(i.logo)}" alt="" onerror="this.style.display='none'">` : ""}
+            <div>
+              <h3>${esc(i.title)}</h3>
+              ${i.company ? `<div class="company-name">${esc(i.company)}</div>` : ""}
+              ${i.date ? `<div class="tl-date">${esc(i.date)}</div>` : ""}
+            </div>
+          </div>` : `
           ${i.date ? `<div class="tl-date">${esc(i.date)}</div>` : ""}
-          <h3>${esc(i.title)}</h3>
+          <h3>${esc(i.title)}</h3>`}
           <p>${esc(i.text)}</p>
+          ${linksHtml(i.links, L)}
           ${i.href ? `<a class="more" href="${esc(i.href)}">${esc(L.seeProject)}</a>` : ""}
         </div>
       </article>`;
@@ -174,6 +190,7 @@
                 </div>
               </div>
               <p>${esc(i.text)}</p>
+              ${linksHtml(i.links, L)}
             </div>
           </article>`;
         }).join("")}
@@ -217,6 +234,7 @@
       ${block(L.context, p.context)}${block(L.role, p.role)}${block(L.methods, p.methods)}
       ${block(L.results, p.results)}${block(L.lessons, p.lessons)}
       <div class="gallery">${imgs(photosOf(p.id, p.images), "g-img")}</div>
+      ${linksHtml(p.links, L)}
       ${p.link ? `<p><a class="btn primary" href="${esc(p.link)}" target="_blank" rel="noopener">${esc(L.link)}</a></p>` : ""}`, "detail");
   }
 
