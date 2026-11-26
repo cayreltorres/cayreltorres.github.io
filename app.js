@@ -172,6 +172,7 @@
 
   function secCareer() {
     const c = T().career;
+    const L = T().labels;
     return wrap("career", head("career", c.title, c.intro) + c.sections.map((sec) => `
       <h3 class="sub reveal">${esc(sec.title)}</h3>
       <div class="cards career-grid">
